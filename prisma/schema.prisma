@@ -7,6 +7,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum CityStatus {
+  visited
+  wishlist
+}
+
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
@@ -17,7 +22,7 @@ model City {
   id           Int         @id @default(autoincrement())
   cityName     String      @unique
   country      String
-  status       String
+  status       CityStatus
   visitDate    DateTime
   coverImage   String
   neighborhood String[]
