@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+}
+
+model City {
+  id           Int         @id @default(autoincrement())
+  cityName     String      @unique
+  country      String
+  status       String
+  visitDate    DateTime
+  coverImage   String
+  neighborhood String[]
+  description  String
+  budget       Int // 1 à 5
+  food         Int
+  safety       Int
+  culture      Int
+  Atmosphere   Int
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  images       CityImage[]
+}
+
+model CityImage {
+  id        Int      @id @default(autoincrement())
+  cityId    Int
+  imagePath String
+  caption   String?
+  city      City     @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
