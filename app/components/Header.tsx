@@ -1,10 +1,15 @@
+"use client"
+
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Plus } from 'lucide-react'
-import React from 'react'
+
 import { FormAddDestination } from './FormAddDestination'
+import { useState } from 'react'
 
 const Header = () => {
+    const [open, setOpen] = useState(false);
+
     return (
         <div>
             <h1 className='text-5xl font-light'>My Travel Book</h1>
@@ -12,10 +17,10 @@ const Header = () => {
                 <p className="text-xl text-muted-foreground">Explore, rate and remember your favorite cities</p>
 
 
-                <Dialog>
+                <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger> <Button><Plus />Add destination</Button></DialogTrigger>
                     <DialogContent>
-                        <FormAddDestination></FormAddDestination>
+                        <FormAddDestination onClose={() => setOpen(false)} />
                     </DialogContent>
                 </Dialog>
             </div>

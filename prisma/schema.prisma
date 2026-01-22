@@ -1,11 +1,12 @@
 generator client {
   provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
+
 
 enum CityStatus {
   visited
@@ -31,7 +32,7 @@ model City {
   food         Int
   safety       Int
   culture      Int
-  Atmosphere   Int
+  atmosphere   Int
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   images       CityImage[]

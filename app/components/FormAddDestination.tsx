@@ -16,40 +16,28 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { CityStatus } from "../generated/prisma/enums"
+
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { toast } from "sonner"
+import { createDestination } from "../actions/destination"
+import { useState } from "react"
+import { formSchema } from "../schema/schemas"
 
 
 
 
 
-const formSchema = z.object({
-    cityName: z.string().min(2, {
-        message: "Username must be at least 2 characters."
-    }),
-    country: z.string(),
-    status: z.enum(CityStatus),
-    visitDate: z.string(),
-    coverImage: z.string(),
-    neighborhood: z.string(),
-    budget: z.int(),
-    food: z.int(),
-    safety: z.int(),
-    culture: z.int(),
-    atmosphere: z.int(),
-    createdAt: z.date(),
-    updatedAt: z.date()
-})
 
-export function FormAddDestination() {
+export function FormAddDestination({ onClose }: { onClose: () => void }) {
+    const [isLoading, setIsLoading] = useState(false)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             cityName: "",
             country: "",
-            status: undefined,
+            status: "visited",
             visitDate: "",
             coverImage: "",
             neighborhood: "",
@@ -57,22 +45,34 @@ export function FormAddDestination() {
             food: undefined,
             safety: undefined,
             culture: undefined,
-            atmosphere: undefined,
-            createdAt: undefined,
-            updatedAt: undefined
+            atmosphere: undefined
         }
     })
 
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true)
 
-        console.log(values)
+        try {
+            const result = await createDestination(values)
+
+            if (result.success) {
+                toast.success("Destination added successfully")
+                form.reset()
+                onClose && onClose()
+            } else {
+                toast.error("Failed to add destination")
+            }
+        } catch (error) {
+            toast("An unexpected error occurred")
+        } finally {
+            setIsLoading(false)
+        }
     }
 
 
-
     return (
-        <Form  {...form}>
+        <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <div className="flex gap-4">
                     <FormField
@@ -109,7 +109,7 @@ export function FormAddDestination() {
                         )}
                     />
                 </div>
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="status"
                     render={({ field }) => (
@@ -123,7 +123,7 @@ export function FormAddDestination() {
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Fruits</SelectLabel>
-                                            <SelectItem value="apple">Apple</SelectItem>
+                                            <SelectItem value="apple">visited</SelectItem>
 
                                         </SelectGroup>
                                     </SelectContent>
@@ -135,7 +135,7 @@ export function FormAddDestination() {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
                 <FormField
                     control={form.control}
                     name="coverImage"
@@ -177,7 +177,7 @@ export function FormAddDestination() {
 
                 <FormField
                     control={form.control}
-                    name="status"
+                    name="description"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Personal notes</FormLabel>
@@ -193,7 +193,7 @@ export function FormAddDestination() {
                 />
                 <FormField
                     control={form.control}
-                    name="status"
+                    name="neighborhood"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Neighborhoods</FormLabel>
@@ -208,8 +208,10 @@ export function FormAddDestination() {
                     )}
                 />
                 <div className="flex gap-2 justify-end">
-                    <Button variant="outline">Cancel</Button>
-                    <Button type="submit">Add destination</Button>
+                    <Button type="button" variant="outline">Cancel</Button>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? "Adding..." : "Add destination"}
+                    </Button>
                 </div>
             </form>
         </Form>
