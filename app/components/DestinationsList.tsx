@@ -1,24 +1,10 @@
 "use client"
 
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useQuery } from '@tanstack/react-query'
+import CityCard, { DestinationType } from './CityCard';
 
 
-type DestinationType = {
-    id: 'number',
-    cityName: 'string',
-    country: 'string',
-    status: 'string',
-    description: 'string',
-    visitDate: 'string',
-    coverImage: 'string',
-    neighborhood: 'string',
-    budget: 'number',
-    food: 'number',
-    safety: 'number',
-    culture: 'number',
-    atmosphere: 'number',
-}
+
 
 const DestinationsList = () => {
 
@@ -36,21 +22,17 @@ const DestinationsList = () => {
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error loading destinations</div>;
 
-
+    if (!data || data.length === 0) {
+        return <div>No destination to display</div>
+    }
 
     return (
         <div>
+
             {data?.map((destination) => (
-                <Card key={destination.id}>
-                    <CardHeader>
-                        <CardTitle>{destination.cityName}</CardTitle>
-                        <CardDescription>{destination.country}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        {/* autres infos */}
-                    </CardContent>
-                </Card>
-            ))}
+                <CityCard key={destination.id} destination={destination} />
+            ))} :
+
         </div>
     )
 }

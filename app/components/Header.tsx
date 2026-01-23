@@ -19,7 +19,7 @@ const Header = () => {
 
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger> <Button><Plus />Add destination</Button></DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="!w-fit !max-w-[90vw]" >
                         <FormAddDestination onClose={() => setOpen(false)} />
                     </DialogContent>
                 </Dialog>

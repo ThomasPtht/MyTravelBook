@@ -7,7 +7,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
 enum CityStatus {
   visited
   wishlist
@@ -20,22 +19,23 @@ model User {
 }
 
 model City {
-  id           Int         @id @default(autoincrement())
-  cityName     String      @unique
-  country      String
-  status       CityStatus
-  visitDate    DateTime
-  coverImage   String
-  neighborhood String[]
-  description  String
-  budget       Int // 1 à 5
-  food         Int
-  safety       Int
-  culture      Int
-  atmosphere   Int
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  images       CityImage[]
+  id            Int         @id @default(autoincrement())
+  cityName      String      @unique
+  country       String
+  status        CityStatus
+  visitDate     String
+  coverImage    String
+  neighborhood  String[]
+  description   String
+  overallRating Int
+  budget        Int // 1 à 5
+  food          Int
+  safety        Int
+  culture       Int
+  atmosphere    Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  images        CityImage[]
 }
 
 model CityImage {

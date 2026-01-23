@@ -23,6 +23,7 @@ export async function createDestination(values: unknown) {
             status: validated.data.status ?? "visited",
             description: validated.data.description ?? "",
             budget: validated.data.budget ?? 0,
+            overallRating: validated.data.overallRating ?? 0,
             food: validated.data.food ?? 0,
             safety: validated.data.safety ?? 0,
             culture: validated.data.culture ?? 0,
@@ -30,7 +31,7 @@ export async function createDestination(values: unknown) {
             neighborhood: typeof validated.data.neighborhood === "string"
                 ? validated.data.neighborhood.split(',').map((n: string) => n.trim())
                 : validated.data.neighborhood,
-            visitDate: new Date(validated.data.visitDate),
+            visitDate: validated.data.visitDate ?? ""
         };
 
         const newDestination = await prisma.city.create({
