@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
+import DestinationsList from "./components/DestinationsList";
 
 
 export default function Home() {
@@ -28,6 +29,8 @@ export default function Home() {
           </p>
         </TabsPanel>
       </Tabs>
+
+      <DestinationsList />
 
     </div>
   )
