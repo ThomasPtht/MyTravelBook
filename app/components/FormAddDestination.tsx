@@ -24,6 +24,7 @@ import { createDestination } from "../actions/destination"
 import { useState } from "react"
 import { formSchema } from "../schema/schemas"
 import { Star } from "lucide-react"
+import { uploadDestinationCover } from "../actions/destination-image"
 
 
 
@@ -56,23 +57,38 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
         setIsLoading(true)
 
         try {
-            const result = await createDestination(values)
+            let coverImageUrl = "";
+            // Si un fichier a été sélectionné
+            if (values.coverImage && typeof values.coverImage !== "string") {
+                const formData = new FormData();
+                formData.append("file", values.coverImage);
+                const result = await uploadDestinationCover(formData);
+                // Adapte selon ce que retourne ton action (ici on suppose { url })
+                coverImageUrl = result.url;
+            } else if (typeof values.coverImage === "string") {
+                coverImageUrl = values.coverImage;
+            }
+
+            const result = await createDestination({
+                ...values,
+                coverImage: coverImageUrl,
+            });
 
             if (result.success) {
-                toast.success("Destination added successfully")
-                form.reset()
-                onClose && onClose()
+                toast.success("Destination added successfully");
+                form.reset();
+                onClose && onClose();
             } else {
-                toast.error("Failed to add destination")
+                toast.error("Failed to add destination");
             }
         } catch (error) {
-            toast("An unexpected error occurred")
+            toast("An unexpected error occurred");
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
     }
 
- const watchStatus = form.watch("status")
+    const watchStatus = form.watch("status")
 
 
     return (
@@ -147,7 +163,16 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                         <FormItem>
                             <FormLabel>Cover</FormLabel>
                             <FormControl>
-                                <Input {...field} />
+                                <Input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={e => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            field.onChange(file); // Stocke le fichier dans le form
+                                        }
+                                    }}
+                                />
                             </FormControl>
                             <FormDescription>
 
@@ -157,286 +182,286 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                     )}
                 />
 
-{watchStatus === "visited" && (
-    <>
-                <FormField
-                    control={form.control}
-                    name="visitDate"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Visit date</FormLabel>
-                            <FormControl>
-                                <Input placeholder="May 2024" {...field} />
-                            </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-
-                <div className="p-4 bg-neutral-50 border-2 rounded-lg">
-                    <FormField
-                        control={form.control}
-                        name="overallRating"
-                        render={({ field }) => {
-                            const [hovered, setHovered] = useState<number | null>(null);
-
-                            return (
+                {watchStatus === "visited" && (
+                    <>
+                        <FormField
+                            control={form.control}
+                            name="visitDate"
+                            render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Ratings</FormLabel>
-                                    <p>Overall experience</p>
-                                    <div className="flex gap-2">
-                                        {[1, 2, 3, 4, 5].map((star) => {
-                                            const isSelected = (field.value ?? 0) >= star;
-                                            const isHovered = hovered === star && !isSelected;
-                                            return (
-                                                <Star
-                                                    key={star}
-                                                    size={24}
-                                                    className="cursor-pointer transition-colors"
-                                                    onMouseEnter={() => setHovered(star)}
-                                                    onMouseLeave={() => setHovered(null)}
-                                                    onClick={() => field.onChange(star)}
-                                                    fill={isSelected ? "#BF963D" : "none"}
-                                                    stroke={
-                                                        isSelected
-                                                            ? "" // marron si sélectionné
-                                                            : isHovered
-                                                                ? "#7c4700" // marron au hover sur non sélectionné
-                                                                : "#d1d5db" // gris sinon
-                                                    }
-                                                    strokeWidth={1.5}
-                                                />
-                                            );
-                                        })}
-                                    </div>
+                                    <FormLabel>Visit date</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="May 2024" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+
+                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
-                            );
-                        }}
-                    />
-
-                    <div className="flex gap-2 mt-5">
-                        <FormField
-                            control={form.control}
-                            name="budget"
-                            render={({ field }) => {
-                                const [hovered, setHovered] = useState<number | null>(null);
-
-                                return (
-                                    <FormItem>
-                                        <FormLabel className="flex justify-center">Budget</FormLabel>
-                                        <div className="flex gap-1">
-                                            {[1, 2, 3, 4, 5].map((star) => {
-                                                const isSelected = (field.value ?? 0) >= star;
-                                                const isHovered = hovered === star && !isSelected;
-                                                return (
-                                                    <Star
-                                                        key={star}
-                                                        size={19}
-                                                        className="cursor-pointer transition-colors"
-                                                        onMouseEnter={() => setHovered(star)}
-                                                        onMouseLeave={() => setHovered(null)}
-                                                        onClick={() => field.onChange(star)}
-                                                        fill={isSelected ? "#000" : "none"}
-                                                        stroke={
-                                                            isSelected
-                                                                ? "" // pas de contour sélectionné
-                                                                : isHovered
-                                                                    ? "#7c4700" // contour marron au hover sur non sélectionné
-                                                                    : "#d1d5db" // gris sinon
-                                                        }
-                                                        strokeWidth={1.5}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                        <FormMessage />
-                                    </FormItem>
-                                );
-                            }}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="food"
-                            render={({ field }) => {
-                                const [hovered, setHovered] = useState<number | null>(null);
-
-                                return (
-                                    <FormItem>
-                                        <FormLabel className="flex justify-center">Food</FormLabel>
-                                        <div className="flex gap-1">
-                                            {[1, 2, 3, 4, 5].map((star) => {
-                                                const isSelected = (field.value ?? 0) >= star;
-                                                const isHovered = hovered === star && !isSelected;
-                                                return (
-                                                    <Star
-                                                        key={star}
-                                                        size={19}
-                                                        className="cursor-pointer transition-colors"
-                                                        onMouseEnter={() => setHovered(star)}
-                                                        onMouseLeave={() => setHovered(null)}
-                                                        onClick={() => field.onChange(star)}
-                                                        fill={isSelected ? "#000" : "none"}
-                                                        stroke={
-                                                            isSelected
-                                                                ? "" // pas de contour sélectionné
-                                                                : isHovered
-                                                                    ? "#7c4700" // contour marron au hover sur non sélectionné
-                                                                    : "#d1d5db" // gris sinon
-                                                        }
-                                                        strokeWidth={1.5}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                        <FormMessage />
-                                    </FormItem>
-                                );
-                            }}
+                            )}
                         />
 
+
+                        <div className="p-4 bg-neutral-50 border-2 rounded-lg">
+                            <FormField
+                                control={form.control}
+                                name="overallRating"
+                                render={({ field }) => {
+                                    const [hovered, setHovered] = useState<number | null>(null);
+
+                                    return (
+                                        <FormItem>
+                                            <FormLabel>Ratings</FormLabel>
+                                            <p>Overall experience</p>
+                                            <div className="flex gap-2">
+                                                {[1, 2, 3, 4, 5].map((star) => {
+                                                    const isSelected = (field.value ?? 0) >= star;
+                                                    const isHovered = hovered === star && !isSelected;
+                                                    return (
+                                                        <Star
+                                                            key={star}
+                                                            size={24}
+                                                            className="cursor-pointer transition-colors"
+                                                            onMouseEnter={() => setHovered(star)}
+                                                            onMouseLeave={() => setHovered(null)}
+                                                            onClick={() => field.onChange(star)}
+                                                            fill={isSelected ? "#BF963D" : "none"}
+                                                            stroke={
+                                                                isSelected
+                                                                    ? "" // marron si sélectionné
+                                                                    : isHovered
+                                                                        ? "#7c4700" // marron au hover sur non sélectionné
+                                                                        : "#d1d5db" // gris sinon
+                                                            }
+                                                            strokeWidth={1.5}
+                                                        />
+                                                    );
+                                                })}
+                                            </div>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
+                            />
+
+                            <div className="flex gap-2 mt-5">
+                                <FormField
+                                    control={form.control}
+                                    name="budget"
+                                    render={({ field }) => {
+                                        const [hovered, setHovered] = useState<number | null>(null);
+
+                                        return (
+                                            <FormItem>
+                                                <FormLabel className="flex justify-center">Budget</FormLabel>
+                                                <div className="flex gap-1">
+                                                    {[1, 2, 3, 4, 5].map((star) => {
+                                                        const isSelected = (field.value ?? 0) >= star;
+                                                        const isHovered = hovered === star && !isSelected;
+                                                        return (
+                                                            <Star
+                                                                key={star}
+                                                                size={19}
+                                                                className="cursor-pointer transition-colors"
+                                                                onMouseEnter={() => setHovered(star)}
+                                                                onMouseLeave={() => setHovered(null)}
+                                                                onClick={() => field.onChange(star)}
+                                                                fill={isSelected ? "#000" : "none"}
+                                                                stroke={
+                                                                    isSelected
+                                                                        ? "" // pas de contour sélectionné
+                                                                        : isHovered
+                                                                            ? "#7c4700" // contour marron au hover sur non sélectionné
+                                                                            : "#d1d5db" // gris sinon
+                                                                }
+                                                                strokeWidth={1.5}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        );
+                                    }}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="food"
+                                    render={({ field }) => {
+                                        const [hovered, setHovered] = useState<number | null>(null);
+
+                                        return (
+                                            <FormItem>
+                                                <FormLabel className="flex justify-center">Food</FormLabel>
+                                                <div className="flex gap-1">
+                                                    {[1, 2, 3, 4, 5].map((star) => {
+                                                        const isSelected = (field.value ?? 0) >= star;
+                                                        const isHovered = hovered === star && !isSelected;
+                                                        return (
+                                                            <Star
+                                                                key={star}
+                                                                size={19}
+                                                                className="cursor-pointer transition-colors"
+                                                                onMouseEnter={() => setHovered(star)}
+                                                                onMouseLeave={() => setHovered(null)}
+                                                                onClick={() => field.onChange(star)}
+                                                                fill={isSelected ? "#000" : "none"}
+                                                                stroke={
+                                                                    isSelected
+                                                                        ? "" // pas de contour sélectionné
+                                                                        : isHovered
+                                                                            ? "#7c4700" // contour marron au hover sur non sélectionné
+                                                                            : "#d1d5db" // gris sinon
+                                                                }
+                                                                strokeWidth={1.5}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        );
+                                    }}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="safety"
+                                    render={({ field }) => {
+                                        const [hovered, setHovered] = useState<number | null>(null);
+
+                                        return (
+                                            <FormItem>
+                                                <FormLabel className="flex justify-center">Safety</FormLabel>
+                                                <div className="flex gap-1">
+                                                    {[1, 2, 3, 4, 5].map((star) => {
+                                                        const isSelected = (field.value ?? 0) >= star;
+                                                        const isHovered = hovered === star && !isSelected;
+                                                        return (
+                                                            <Star
+                                                                key={star}
+                                                                size={19}
+                                                                className="cursor-pointer transition-colors"
+                                                                onMouseEnter={() => setHovered(star)}
+                                                                onMouseLeave={() => setHovered(null)}
+                                                                onClick={() => field.onChange(star)}
+                                                                fill={isSelected ? "#000" : "none"}
+                                                                stroke={
+                                                                    isSelected
+                                                                        ? "" // pas de contour sélectionné
+                                                                        : isHovered
+                                                                            ? "#7c4700" // contour marron au hover sur non sélectionné
+                                                                            : "#d1d5db" // gris sinon
+                                                                }
+                                                                strokeWidth={1.5}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        );
+                                    }}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="culture"
+                                    render={({ field }) => {
+                                        const [hovered, setHovered] = useState<number | null>(null);
+
+                                        return (
+                                            <FormItem>
+                                                <FormLabel className="flex justify-center">Culture</FormLabel>
+                                                <div className="flex gap-1">
+                                                    {[1, 2, 3, 4, 5].map((star) => {
+                                                        const isSelected = (field.value ?? 0) >= star;
+                                                        const isHovered = hovered === star && !isSelected;
+                                                        return (
+                                                            <Star
+                                                                key={star}
+                                                                size={19}
+                                                                className="cursor-pointer transition-colors"
+                                                                onMouseEnter={() => setHovered(star)}
+                                                                onMouseLeave={() => setHovered(null)}
+                                                                onClick={() => field.onChange(star)}
+                                                                fill={isSelected ? "#000" : "none"}
+                                                                stroke={
+                                                                    isSelected
+                                                                        ? "" // pas de contour sélectionné
+                                                                        : isHovered
+                                                                            ? "#7c4700" // contour marron au hover sur non sélectionné
+                                                                            : "#d1d5db" // gris sinon
+                                                                }
+                                                                strokeWidth={1.5}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        );
+                                    }}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="atmosphere"
+                                    render={({ field }) => {
+                                        const [hovered, setHovered] = useState<number | null>(null);
+
+                                        return (
+                                            <FormItem>
+                                                <FormLabel className="flex justify-center">Budget</FormLabel>
+                                                <div className="flex gap-1">
+                                                    {[1, 2, 3, 4, 5].map((star) => {
+                                                        const isSelected = (field.value ?? 0) >= star;
+                                                        const isHovered = hovered === star && !isSelected;
+                                                        return (
+                                                            <Star
+                                                                key={star}
+                                                                size={19}
+                                                                className="cursor-pointer transition-colors"
+                                                                onMouseEnter={() => setHovered(star)}
+                                                                onMouseLeave={() => setHovered(null)}
+                                                                onClick={() => field.onChange(star)}
+                                                                fill={isSelected ? "#000" : "none"}
+                                                                stroke={
+                                                                    isSelected
+                                                                        ? "" // pas de contour sélectionné
+                                                                        : isHovered
+                                                                            ? "#7c4700" // contour marron au hover sur non sélectionné
+                                                                            : "#d1d5db" // gris sinon
+                                                                }
+                                                                strokeWidth={1.5}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        );
+                                    }}
+                                />
+                            </div>
+                        </div>
                         <FormField
                             control={form.control}
-                            name="safety"
-                            render={({ field }) => {
-                                const [hovered, setHovered] = useState<number | null>(null);
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Personal notes</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder="Share your experience..." {...field} />
+                                    </FormControl>
+                                    <FormDescription>
 
-                                return (
-                                    <FormItem>
-                                        <FormLabel className="flex justify-center">Safety</FormLabel>
-                                        <div className="flex gap-1">
-                                            {[1, 2, 3, 4, 5].map((star) => {
-                                                const isSelected = (field.value ?? 0) >= star;
-                                                const isHovered = hovered === star && !isSelected;
-                                                return (
-                                                    <Star
-                                                        key={star}
-                                                        size={19}
-                                                        className="cursor-pointer transition-colors"
-                                                        onMouseEnter={() => setHovered(star)}
-                                                        onMouseLeave={() => setHovered(null)}
-                                                        onClick={() => field.onChange(star)}
-                                                        fill={isSelected ? "#000" : "none"}
-                                                        stroke={
-                                                            isSelected
-                                                                ? "" // pas de contour sélectionné
-                                                                : isHovered
-                                                                    ? "#7c4700" // contour marron au hover sur non sélectionné
-                                                                    : "#d1d5db" // gris sinon
-                                                        }
-                                                        strokeWidth={1.5}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                        <FormMessage />
-                                    </FormItem>
-                                );
-                            }}
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-
-                        <FormField
-                            control={form.control}
-                            name="culture"
-                            render={({ field }) => {
-                                const [hovered, setHovered] = useState<number | null>(null);
-
-                                return (
-                                    <FormItem>
-                                        <FormLabel className="flex justify-center">Culture</FormLabel>
-                                        <div className="flex gap-1">
-                                            {[1, 2, 3, 4, 5].map((star) => {
-                                                const isSelected = (field.value ?? 0) >= star;
-                                                const isHovered = hovered === star && !isSelected;
-                                                return (
-                                                    <Star
-                                                        key={star}
-                                                        size={19}
-                                                        className="cursor-pointer transition-colors"
-                                                        onMouseEnter={() => setHovered(star)}
-                                                        onMouseLeave={() => setHovered(null)}
-                                                        onClick={() => field.onChange(star)}
-                                                        fill={isSelected ? "#000" : "none"}
-                                                        stroke={
-                                                            isSelected
-                                                                ? "" // pas de contour sélectionné
-                                                                : isHovered
-                                                                    ? "#7c4700" // contour marron au hover sur non sélectionné
-                                                                    : "#d1d5db" // gris sinon
-                                                        }
-                                                        strokeWidth={1.5}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                        <FormMessage />
-                                    </FormItem>
-                                );
-                            }}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="atmosphere"
-                            render={({ field }) => {
-                                const [hovered, setHovered] = useState<number | null>(null);
-
-                                return (
-                                    <FormItem>
-                                        <FormLabel className="flex justify-center">Budget</FormLabel>
-                                        <div className="flex gap-1">
-                                            {[1, 2, 3, 4, 5].map((star) => {
-                                                const isSelected = (field.value ?? 0) >= star;
-                                                const isHovered = hovered === star && !isSelected;
-                                                return (
-                                                    <Star
-                                                        key={star}
-                                                        size={19}
-                                                        className="cursor-pointer transition-colors"
-                                                        onMouseEnter={() => setHovered(star)}
-                                                        onMouseLeave={() => setHovered(null)}
-                                                        onClick={() => field.onChange(star)}
-                                                        fill={isSelected ? "#000" : "none"}
-                                                        stroke={
-                                                            isSelected
-                                                                ? "" // pas de contour sélectionné
-                                                                : isHovered
-                                                                    ? "#7c4700" // contour marron au hover sur non sélectionné
-                                                                    : "#d1d5db" // gris sinon
-                                                        }
-                                                        strokeWidth={1.5}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                        <FormMessage />
-                                    </FormItem>
-                                );
-                            }}
-                        />
-                    </div>
-                </div>
-                <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Personal notes</FormLabel>
-                            <FormControl>
-                                <Textarea placeholder="Share your experience..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                </>
+                    </>
                 )}
 
                 <FormField

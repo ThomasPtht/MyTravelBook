@@ -52,12 +52,13 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                                 <MapPin size={16} /> {destination.country}
                             </CardDescription>
                         </div>
+                        {destination.coverImage}
                         <Badge variant="secondary">{destination.status}</Badge>
                     </div>
                     {destination.coverImage && (
                         <img src={destination.coverImage} alt={destination.cityName} className="mt-2 rounded-md w-full h-32 object-cover" />
                     )}
-                    <span className="text-xs"><Calendar/>Visit date: {destination.visitDate ?? '-'}</span>
+                    <span className="text-xs"><Calendar />Visit date: {destination.visitDate ?? '-'}</span>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-2 text-sm mb-2">

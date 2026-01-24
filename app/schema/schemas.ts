@@ -12,7 +12,7 @@ export const formSchema = z.object({
     status: z.enum(CityStatus),
     description: z.string().optional(),
     visitDate: z.string(),
-    coverImage: z.string(),
+    coverImage: z.union([z.string(), z.instanceof(File)]),
     neighborhood: z.string(),
     overallRating: z.number().int(),
     budget: z.number().int(),

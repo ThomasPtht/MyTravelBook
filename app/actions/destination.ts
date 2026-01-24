@@ -21,6 +21,7 @@ export async function createDestination(values: unknown) {
         const data = {
             ...validated.data,
             status: validated.data.status ?? "visited",
+            coverImage: validated.data.coverImage ?? "",
             description: validated.data.description ?? "",
             budget: validated.data.budget ?? 0,
             overallRating: validated.data.overallRating ?? 0,
