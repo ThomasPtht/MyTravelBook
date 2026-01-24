@@ -63,7 +63,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                 const formData = new FormData();
                 formData.append("file", values.coverImage);
                 const result = await uploadDestinationCover(formData);
-                // Adapte selon ce que retourne ton action (ici on suppose { url })
+                // Ce que l'on retourne 
                 coverImageUrl = result.url;
             } else if (typeof values.coverImage === "string") {
                 coverImageUrl = values.coverImage;

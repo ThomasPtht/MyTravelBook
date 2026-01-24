@@ -1,24 +1,25 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useQuery } from '@tanstack/react-query';
-import { Calendar, MapPin } from 'lucide-react';
-import React from 'react'
+import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Utensils } from 'lucide-react';
+
 
 
 export type DestinationType = {
-    id: 'number',
-    cityName: 'string',
-    country: 'string',
-    status: 'string',
-    description: 'string',
-    visitDate: 'string',
-    coverImage: 'string',
-    neighborhood: 'string',
-    budget: 'number',
-    food: 'number',
-    safety: 'number',
-    culture: 'number',
-    atmosphere: 'number',
+    id: number,
+    cityName: string,
+    country: string,
+    status: string,
+    description: string,
+    visitDate: string,
+    coverImage: string,
+    neighborhood: string,
+    overallRating: number,
+    budget: number,
+    food: number,
+    safety: number,
+    culture: number,
+    atmosphere: number,
 }
 
 const CityCard = ({ destination }: { destination: DestinationType }) => {
@@ -43,30 +44,74 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
 
     return (
         <div>
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <CardTitle>{destination.cityName}</CardTitle>
-                            <CardDescription className="flex items-center gap-1">
-                                <MapPin size={16} /> {destination.country}
-                            </CardDescription>
+            <Card className="group overflow-hidden border border-border bg-card hover:shadow-xl transition-all duration-300 cursor-pointer">
+
+                <div className="flex items-center justify-between">
+                </div>
+                {destination.coverImage && (
+                    <div className="relative w-full aspect-[4/3] overflow-hidden">
+                        <img
+                            src={destination.coverImage}
+                            alt={destination.cityName}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent rounded-md" />
+                        {/* Badge en haut à droite */}
+                        <div className="absolute top-2 right-2 z-10">
+                            <Badge className='rounded-md capitalize' variant="orange">{destination.status}</Badge>
                         </div>
-                        {destination.coverImage}
-                        <Badge variant="secondary">{destination.status}</Badge>
+                        {/* Infos en bas à gauche */}
+                        <div className="absolute bottom-2 left-2 text-white z-10 m-2">
+                            <div className="font-light text-2xl text-balance">{destination.cityName}</div>
+                            <div className="flex gap-1 justify-center text-sm mt-2 text-white/90 font-light">
+                                <MapPin size={18} />
+                                {destination.country}
+                            </div>
+
+                        </div>
                     </div>
-                    {destination.coverImage && (
-                        <img src={destination.coverImage} alt={destination.cityName} className="mt-2 rounded-md w-full h-32 object-cover" />
-                    )}
-                    <span className="text-xs"><Calendar />Visit date: {destination.visitDate ?? '-'}</span>
-                </CardHeader>
+                )}
+
                 <CardContent>
-                    <div className="grid grid-cols-2 gap-2 text-sm mb-2">
-                        <span><strong>Budget:</strong> {destination.budget ?? '-'}</span>
-                        <span><strong>Food:</strong> {destination.food ?? '-'}</span>
-                        <span><strong>Safety:</strong> {destination.safety ?? '-'}</span>
-                        <span><strong>Culture:</strong> {destination.culture ?? '-'}</span>
-                        <span><strong>Atmosphere:</strong> {destination.atmosphere ?? '-'}</span>
+                    <div className="flex flex-col gap-3 mb-4">
+                        {destination.visitDate && (
+                            <div className=" flex text-muted-foreground items-center gap-1 mt-1">
+                                <Calendar size={18} />
+                                {destination.visitDate}
+                            </div>
+                        )}
+                        <span>
+                            {Array.from({ length: 5 }).map((_, i) => (
+                                <Star
+                                    key={i}
+                                    size={19}
+                                    className={`inline-block ${i < (destination.overallRating ?? 0) ? "fill-yellow-600 text-yellow-600" : "text-slate-200"}`}
+                                />
+                            ))}
+                        </span>
+                        <div className="text-xs flex items-center gap-1">
+
+                        </div>
+                        <div className="flex w-full justify-between text-xs">
+                            <span className=""><DollarSign className='text-muted-foreground' />
+                                {Array.from({ length: destination.budget ?? 0 }).map((_, i) => (
+                                    <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                                ))}
+                            </span>
+                            <span><Utensils className='text-muted-foreground' />  {Array.from({ length: destination.food ?? 0 }).map((_, i) => (
+                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                            ))}</span>
+                            <span><ShieldCheck className='text-muted-foreground' />  {Array.from({ length: destination.safety ?? 0 }).map((_, i) => (
+                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                            ))}</span>
+                            <span><Palette className='text-muted-foreground' />  {Array.from({ length: destination.culture ?? 0 }).map((_, i) => (
+                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                            ))}</span>
+                            <span><Sparkles className='text-muted-foreground' />  {Array.from({ length: destination.atmosphere ?? 0 }).map((_, i) => (
+                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                            ))}
+                            </span>
+                        </div>
                     </div>
                     <div className="text-muted-foreground">{destination.description}</div>
                 </CardContent>
