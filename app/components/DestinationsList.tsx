@@ -2,12 +2,18 @@
 
 import { useQuery } from '@tanstack/react-query'
 import CityCard, { DestinationType } from './CityCard';
-
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import DetailsCityCard from './DetailsCityCard';
+import { useState } from 'react';
 
 
 
 const DestinationsList = ({ status }: { status: "all" | "visited" | "wishlist" }) => {
+    const [selectedId, setSelectedId] = useState<number | null>(null);
 
+    const handleOpenChange = (open: boolean) => {
+        if (!open) setSelectedId(null);
+    };
 
 
     async function fetchDestinations() {
@@ -34,14 +40,31 @@ const DestinationsList = ({ status }: { status: "all" | "visited" | "wishlist" }
 
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filtered?.map((destination) => (
+                    <div
+                        key={destination.id}
+                        onClick={() => setSelectedId(destination.id)}
+                        className="cursor-pointer"
+                    >
+                        <CityCard destination={destination} />
+                    </div>
+                ))}
+            </div>
 
-            {filtered?.map((destination) => (
-                <CityCard key={destination.id} destination={destination} />
-            ))}
-
-        </div>
-    )
+            <Dialog open={!!selectedId} onOpenChange={handleOpenChange}>
+                <DialogContent className="w-fit! max-w-[90vw]!">
+                    {selectedId && (
+                        <DetailsCityCard
+                            onClose={() => setSelectedId(null)}
+                            id={selectedId}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
+        </>
+    );
 }
 
 export default DestinationsList

@@ -135,7 +135,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                                     ? (
                                         <>
                                             {destination.neighborhood.slice(0, 3).map((tag: string) => (
-                                                <Badge key={tag} className=" rounded-md bg-slate-200 text-secondary-foreground font-normal text-xs px-2 py-1 mt-2">{tag}</Badge>
+                                                <Badge key={tag} className=" rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-1 mt-2">{tag}</Badge>
                                             ))}
                                             {destination.neighborhood.length > 3 && (
                                                 <Badge className="rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-0.5 mt-2">+{destination.neighborhood.length - 3}</Badge>
