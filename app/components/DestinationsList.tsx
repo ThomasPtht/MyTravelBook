@@ -6,7 +6,9 @@ import CityCard, { DestinationType } from './CityCard';
 
 
 
-const DestinationsList = () => {
+const DestinationsList = ({ status }: { status: "all" | "visited" | "wishlist" }) => {
+
+
 
     async function fetchDestinations() {
         const res = await fetch("/api/destinations");
@@ -26,12 +28,17 @@ const DestinationsList = () => {
         return <div>No destination to display</div>
     }
 
+    const filtered = status === "all"
+        ? data
+        : data.filter(d => d.status === status);
+
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            {data?.map((destination) => (
+            {filtered?.map((destination) => (
                 <CityCard key={destination.id} destination={destination} />
-            ))} :
+            ))}
 
         </div>
     )

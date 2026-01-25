@@ -13,7 +13,7 @@ export type DestinationType = {
     description: string,
     visitDate: string,
     coverImage: string,
-    neighborhood: string,
+    neighborhood: string[],
     overallRating: number,
     budget: number,
     food: number,
@@ -71,57 +71,88 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                         </div>
                     </div>
                 )}
-
-                <CardContent>
-                    <div className="flex flex-col gap-3 mb-4">
-                        {destination.visitDate && (
-                            <div className=" flex text-muted-foreground items-center gap-1 mt-1">
-                                <Calendar size={18} />
-                                {destination.visitDate}
-                            </div>
-                        )}
-                        <span>
-                            {Array.from({ length: 5 }).map((_, i) => (
-                                <Star
-                                    key={i}
-                                    size={19}
-                                    className={`inline-block ${i < (destination.overallRating ?? 0) ? "fill-yellow-600 text-yellow-600" : "text-slate-200"}`}
-                                />
-                            ))}
-                        </span>
-                        <div className="text-xs flex items-center gap-1">
-
-                        </div>
-                        <div className="flex w-full justify-between text-xs">
-                            <span className=""><DollarSign className='text-muted-foreground' />
-                                {Array.from({ length: destination.budget ?? 0 }).map((_, i) => (
-                                    <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                {destination.status === "visited" && (
+                    <CardContent>
+                        <div className="flex flex-col gap-3 mb-4">
+                            {destination.visitDate && (
+                                <div className=" flex text-muted-foreground items-center gap-1 mt-1">
+                                    <Calendar size={18} />
+                                    {destination.visitDate}
+                                </div>
+                            )}
+                            {/* Overall Rating */}
+                            <div className="flex items-center gap-2">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star
+                                        key={i}
+                                        size={19}
+                                        className={`inline-block ${i < (destination.overallRating ?? 0) ? "fill-yellow-600 text-yellow-600" : "text-slate-200"}`}
+                                    />
                                 ))}
-                            </span>
-                            <span><Utensils className='text-muted-foreground' />  {Array.from({ length: destination.food ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}</span>
-                            <span><ShieldCheck className='text-muted-foreground' />  {Array.from({ length: destination.safety ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}</span>
-                            <span><Palette className='text-muted-foreground' />  {Array.from({ length: destination.culture ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}</span>
-                            <span><Sparkles className='text-muted-foreground' />  {Array.from({ length: destination.atmosphere ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}
-                            </span>
-                        </div>
-                    </div>
-                    <div className="text-muted-foreground">{destination.description}</div>
-                </CardContent>
-                <CardFooter>
+                                <span className="text-muted-foreground text-sm ">{destination.overallRating}/5</span>
+                            </div>
 
-                    {/* Ajoute ici des boutons ou actions */}
+                            <div className="text-xs flex items-center gap-1">
+
+                            </div>
+                            <div className="flex w-full justify-between text-xs">
+                                <span className="flex flex-col items-center"><DollarSign className='text-muted-foreground' size={18} />
+                                    <div>
+                                        {Array.from({ length: destination.budget ?? 0 }).map((_, i) => (
+                                            <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                                        ))}
+                                    </div>
+                                </span>
+                                <span className="flex flex-col items-center"><Utensils className='text-muted-foreground' size={18} />
+                                    <div> {Array.from({ length: destination.food ?? 0 }).map((_, i) => (
+                                        <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                                    ))}</div></span>
+                                <span className='flex flex-col items-center'><ShieldCheck className='text-muted-foreground' size={18} />
+                                    <div>{Array.from({ length: destination.safety ?? 0 }).map((_, i) => (
+                                        <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                                    ))}</div></span>
+                                <span className='flex flex-col items-center'><Palette className='text-muted-foreground' size={18} />
+                                    <div>{Array.from({ length: destination.culture ?? 0 }).map((_, i) => (
+                                        <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                                    ))}</div></span>
+                                <span className='flex flex-col items-center'><Sparkles className='text-muted-foreground' size={18} />
+                                    <div>{Array.from({ length: destination.atmosphere ?? 0 }).map((_, i) => (
+                                        <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
+                                    ))}</div>
+                                </span>
+                            </div>
+                            <div className="text-muted-foreground">{destination.description}</div>
+                        </div>
+
+                    </CardContent>
+                )}
+                {destination.status === "wishlist" && (
+                    <CardContent>
+                        <div>
+                            <p className='text-muted-foreground text-xs'>MUST VISIT</p>
+                            <div className="flex flex-wrap gap-2">
+                                {Array.isArray(destination.neighborhood)
+                                    ? (
+                                        <>
+                                            {destination.neighborhood.slice(0, 3).map((tag: string) => (
+                                                <Badge key={tag} className=" rounded-md bg-slate-200 text-secondary-foreground font-normal text-xs px-2 py-1 mt-2">{tag}</Badge>
+                                            ))}
+                                            {destination.neighborhood.length > 3 && (
+                                                <Badge className="rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-0.5 mt-2">+{destination.neighborhood.length - 3}</Badge>
+                                            )}
+                                        </>
+                                    )
+                                    : <span>{destination.neighborhood}</span>
+                                }
+                            </div>
+                        </div>
+                    </CardContent>
+                )}
+                <CardFooter>
                 </CardFooter>
             </Card>
 
-        </div>
+        </div >
     )
 }
 

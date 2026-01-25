@@ -1,36 +1,26 @@
+"use client"
+
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
 import DestinationsList from "./components/DestinationsList";
+import { useState } from "react";
 
 
 export default function Home() {
+
+  const [tab, setTab] = useState<"all" | "visited" | "wishlist">("all");
   return (
     <div>
-      <Tabs defaultValue="tab-1">
+      <Tabs className='mb-10' value={tab} onValueChange={setTab} defaultValue="all">
         <div className="border-b">
           <TabsList variant="underline">
-            <TabsTab value="tab-1">All destinations</TabsTab>
-            <TabsTab value="tab-2">Visited</TabsTab>
-            <TabsTab value="tab-3">Wishlist</TabsTab>
+            <TabsTab value="all">All destinations</TabsTab>
+            <TabsTab value="visited">Visited</TabsTab>
+            <TabsTab value="wishlist">Wishlist</TabsTab>
           </TabsList>
         </div>
-        <TabsPanel value="tab-1">
-          <p className="p-4 text-center text-muted-foreground text-xs">
-            Tab 1 content
-          </p>
-        </TabsPanel>
-        <TabsPanel value="tab-2">
-          <p className="p-4 text-center text-muted-foreground text-xs">
-            Tab 2 content
-          </p>
-        </TabsPanel>
-        <TabsPanel value="tab-3">
-          <p className="p-4 text-center text-muted-foreground text-xs">
-            Tab 3 content
-          </p>
-        </TabsPanel>
       </Tabs>
 
-      <DestinationsList />
+      <DestinationsList status={tab} />
 
     </div>
   )

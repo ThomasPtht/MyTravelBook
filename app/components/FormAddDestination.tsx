@@ -23,8 +23,9 @@ import { toast } from "sonner"
 import { createDestination } from "../actions/destination"
 import { useState } from "react"
 import { formSchema } from "../schema/schemas"
-import { Star } from "lucide-react"
+import { RefreshCcw, Star } from "lucide-react"
 import { uploadDestinationCover } from "../actions/destination-image"
+import { TagsInput, TagsInputClear, TagsInputInput, TagsInputItem, TagsInputLabel, TagsInputList } from "@/components/ui/tags-input"
 
 
 
@@ -34,6 +35,7 @@ import { uploadDestinationCover } from "../actions/destination-image"
 export function FormAddDestination({ onClose }: { onClose: () => void }) {
     const [isLoading, setIsLoading] = useState(false)
 
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -42,7 +44,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
             status: "visited",
             visitDate: "",
             coverImage: "",
-            neighborhood: "",
+            neighborhood: [],
             overallRating: undefined,
             budget: undefined,
             food: undefined,
@@ -471,7 +473,28 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                         <FormItem>
                             <FormLabel>Neighborhoods</FormLabel>
                             <FormControl>
-                                <Input {...field} />
+                                <TagsInput
+                                    value={Array.isArray(field.value) ? field.value : field.value ? [field.value] : []}
+                                    onValueChange={field.onChange}
+                                    editable
+                                    addOnPaste
+                                >
+
+                                    <TagsInputList>
+                                        {(Array.isArray(field.value) ? field.value : field.value ? [field.value] : []).map((neigh) => (
+                                            <TagsInputItem key={neigh} value={neigh}>
+                                                {neigh}
+                                            </TagsInputItem>
+                                        ))}
+                                        <TagsInputInput placeholder="Add neighborhood..." />
+                                    </TagsInputList>
+                                    <TagsInputClear asChild>
+                                        <Button variant="outline">
+                                            <RefreshCcw className="h-4 w-4" />
+                                            Clear
+                                        </Button>
+                                    </TagsInputClear>
+                                </TagsInput>
                             </FormControl>
                             <FormDescription>
 
