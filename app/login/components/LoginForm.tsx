@@ -8,13 +8,13 @@ import { toast } from 'sonner';
 import z from 'zod';
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm() {
 
     const router = useRouter();
 
     const formSchema = z.object({
-        username: z.string().min(2, { message: "Username must be at least 2 characters." }),
         email: z.string().min(5, { message: "Please enter a valid email address." }),
         password: z.string().min(6, { message: "Password must be at least 6 characters." }),
     });
@@ -22,40 +22,26 @@ export default function LoginForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
             email: "",
             password: "",
         },
     });
 
-    // Mutation with TanStack Query
-    const mutation = useMutation({
-        mutationFn: async (values: z.infer<typeof formSchema>) => {
-            const response = await fetch("/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(values),
-            });
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || "Login failed");
-            }
-            return response.json();
-        },
-        onSuccess: () => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const res = await signIn("credentials", {
+            email: values.email,
+            password: values.password,
+            redirect: false,
+        });
+        console.log(res);
+        if (res?.ok) {
             toast.success("Login successful! Welcome back.");
             router.push("/");
-            console.log("Login successful");
-        },
-        onError: (error: any) => {
-            toast.error("Login failed: " + error.message);
-            console.error(error.message);
-        },
-    });
-
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        mutation.mutate(values);
+        } else {
+            toast.error("Login failed: credentials are incorrect.");
+        }
     };
+
 
     return (
         <Form {...form}>
@@ -85,8 +71,8 @@ export default function LoginForm() {
                     )}
                 />
                 <div className='flex justify-center '>
-                    <Button className='w-full' type="submit" disabled={mutation.isPending}>
-                        {mutation.isPending ? "Loading..." : "Login"}
+                    <Button className='w-full' type="submit">
+                        Login
                     </Button>
                 </div>
                 <Link href="/register" className="text-sm text-primary hover:underline flex justify-center">

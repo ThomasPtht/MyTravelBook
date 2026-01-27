@@ -1,7 +1,9 @@
-import NextAuth from "next-auth"
+import NextAuth, { Session, User } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
+import { verify } from "argon2";
+import { JWT } from "next-auth/jwt";
 
 
 export const authOptions = {
@@ -28,18 +30,39 @@ export const authOptions = {
                 if (!user) return null;
 
                 // Vérifie le mot de passe
-                const isValid = await compare(credentials.password, user.password);
+                const isValid = await verify(user.password, credentials.password);
                 if (!isValid) return null;
 
-                // Retourne l'utilisateur (sans le mot de passe)
+                // Retourne l'utilisateur 
                 return {
-                    id: user.id,
+                    id: user.id.toString(),
                     email: user.email,
-                    username: user.username, // si tu as ce champ
+                    username: user.username,
                 };
             },
         }),
     ],
-}
+    callbacks: {
+        async session({ session, token }: { session: Session; token: JWT }) {
+            // @ts-expect-error: id et username sont ajoutés via NextAuth callback
+            session.user.id = token.id;
+            // @ts-expect-error: username est ajouté via NextAuth callback
+            session.user.username = token.username;
+            return session;
+        },
+        async jwt({ token, user }: { token: JWT; user?: User }) {
+            if (user) {
+                token.id = user.id;
+                token.username = (user as any).username;
+            }
+            return token;
+        },
+    },
+    secret: process.env.NEXTAUTH_SECRET,
 
-export default NextAuth(authOptions)
+};
+
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };

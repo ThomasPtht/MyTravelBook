@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache"
 import { prisma } from "@/lib/prisma"
 import { formSchema } from "../schema/schemas"
 import { normalizeDestination } from "@/lib/normalizeDestination"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]/route"
 
 export async function createDestination(values: unknown) {
     const validated = formSchema.safeParse(values)
@@ -19,7 +21,15 @@ export async function createDestination(values: unknown) {
     }
     try {
 
-        const data = normalizeDestination(validated.data)
+        const session = await getServerSession(authOptions);
+        if (!session || !session.user?.id) {
+            return { success: false, error: "Unauthorized" };
+        }
+
+        const data = {
+            ...normalizeDestination(validated.data),
+            userId: Number(session.user.id),
+        };
 
         const newDestination = await prisma.city.create({
             data
@@ -30,7 +40,6 @@ export async function createDestination(values: unknown) {
         console.error(error);
         return { success: false, error: "Error creating destination" };
     }
-
 }
 
 

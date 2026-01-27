@@ -12,6 +12,7 @@ A web application to keep track of the cities and countries you have visited or 
 - React Hook Form
 - Tailwind CSS
 - Shadcn UI
+- Authentification with NextAuth.js
 - Bucket S3 with Cloudflare
 
 *** Features :

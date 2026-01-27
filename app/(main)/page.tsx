@@ -1,27 +1,15 @@
-"use client"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+import HomeTabs from "./components/HomeTabs";
 
-import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
-import DestinationsList from "../components/DestinationsList";
-import { useState } from "react";
 
+export default async function HomeRootPage() {
+  const session = await getServerSession(authOptions);
 
-export default function Home() {
+  if (!session) {
+    redirect("/login");
+  }
 
-  const [tab, setTab] = useState<"all" | "visited" | "wishlist">("all");
-  return (
-    <div>
-      <Tabs className='mb-10' value={tab} onValueChange={setTab} defaultValue="all">
-        <div className="border-b">
-          <TabsList variant="underline">
-            <TabsTab value="all">All destinations</TabsTab>
-            <TabsTab value="visited">Visited</TabsTab>
-            <TabsTab value="wishlist">Wishlist</TabsTab>
-          </TabsList>
-        </div>
-      </Tabs>
-
-      <DestinationsList status={tab} />
-
-    </div>
-  )
+  return <HomeTabs />;
 }

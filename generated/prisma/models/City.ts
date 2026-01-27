@@ -34,6 +34,7 @@ export type CityAvgAggregateOutputType = {
   safety: number | null
   culture: number | null
   atmosphere: number | null
+  userId: number | null
 }
 
 export type CitySumAggregateOutputType = {
@@ -44,6 +45,7 @@ export type CitySumAggregateOutputType = {
   safety: number | null
   culture: number | null
   atmosphere: number | null
+  userId: number | null
 }
 
 export type CityMinAggregateOutputType = {
@@ -62,6 +64,7 @@ export type CityMinAggregateOutputType = {
   atmosphere: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  userId: number | null
 }
 
 export type CityMaxAggregateOutputType = {
@@ -80,6 +83,7 @@ export type CityMaxAggregateOutputType = {
   atmosphere: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  userId: number | null
 }
 
 export type CityCountAggregateOutputType = {
@@ -99,6 +103,7 @@ export type CityCountAggregateOutputType = {
   atmosphere: number
   createdAt: number
   updatedAt: number
+  userId: number
   _all: number
 }
 
@@ -111,6 +116,7 @@ export type CityAvgAggregateInputType = {
   safety?: true
   culture?: true
   atmosphere?: true
+  userId?: true
 }
 
 export type CitySumAggregateInputType = {
@@ -121,6 +127,7 @@ export type CitySumAggregateInputType = {
   safety?: true
   culture?: true
   atmosphere?: true
+  userId?: true
 }
 
 export type CityMinAggregateInputType = {
@@ -139,6 +146,7 @@ export type CityMinAggregateInputType = {
   atmosphere?: true
   createdAt?: true
   updatedAt?: true
+  userId?: true
 }
 
 export type CityMaxAggregateInputType = {
@@ -157,6 +165,7 @@ export type CityMaxAggregateInputType = {
   atmosphere?: true
   createdAt?: true
   updatedAt?: true
+  userId?: true
 }
 
 export type CityCountAggregateInputType = {
@@ -176,6 +185,7 @@ export type CityCountAggregateInputType = {
   atmosphere?: true
   createdAt?: true
   updatedAt?: true
+  userId?: true
   _all?: true
 }
 
@@ -282,6 +292,7 @@ export type CityGroupByOutputType = {
   atmosphere: number
   createdAt: Date
   updatedAt: Date
+  userId: number
   _count: CityCountAggregateOutputType | null
   _avg: CityAvgAggregateOutputType | null
   _sum: CitySumAggregateOutputType | null
@@ -324,7 +335,9 @@ export type CityWhereInput = {
   atmosphere?: Prisma.IntFilter<"City"> | number
   createdAt?: Prisma.DateTimeFilter<"City"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"City"> | Date | string
+  userId?: Prisma.IntFilter<"City"> | number
   images?: Prisma.CityImageListRelationFilter
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type CityOrderByWithRelationInput = {
@@ -344,7 +357,9 @@ export type CityOrderByWithRelationInput = {
   atmosphere?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   images?: Prisma.CityImageOrderByRelationAggregateInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type CityWhereUniqueInput = Prisma.AtLeast<{
@@ -367,7 +382,9 @@ export type CityWhereUniqueInput = Prisma.AtLeast<{
   atmosphere?: Prisma.IntFilter<"City"> | number
   createdAt?: Prisma.DateTimeFilter<"City"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"City"> | Date | string
+  userId?: Prisma.IntFilter<"City"> | number
   images?: Prisma.CityImageListRelationFilter
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "cityName">
 
 export type CityOrderByWithAggregationInput = {
@@ -387,6 +404,7 @@ export type CityOrderByWithAggregationInput = {
   atmosphere?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.CityCountOrderByAggregateInput
   _avg?: Prisma.CityAvgOrderByAggregateInput
   _max?: Prisma.CityMaxOrderByAggregateInput
@@ -414,6 +432,7 @@ export type CityScalarWhereWithAggregatesInput = {
   atmosphere?: Prisma.IntWithAggregatesFilter<"City"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"City"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"City"> | Date | string
+  userId?: Prisma.IntWithAggregatesFilter<"City"> | number
 }
 
 export type CityCreateInput = {
@@ -433,6 +452,7 @@ export type CityCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   images?: Prisma.CityImageCreateNestedManyWithoutCityInput
+  user: Prisma.UserCreateNestedOneWithoutCitiesInput
 }
 
 export type CityUncheckedCreateInput = {
@@ -452,6 +472,7 @@ export type CityUncheckedCreateInput = {
   atmosphere: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  userId: number
   images?: Prisma.CityImageUncheckedCreateNestedManyWithoutCityInput
 }
 
@@ -472,6 +493,7 @@ export type CityUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.CityImageUpdateManyWithoutCityNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCitiesNestedInput
 }
 
 export type CityUncheckedUpdateInput = {
@@ -491,6 +513,7 @@ export type CityUncheckedUpdateInput = {
   atmosphere?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
   images?: Prisma.CityImageUncheckedUpdateManyWithoutCityNestedInput
 }
 
@@ -511,6 +534,7 @@ export type CityCreateManyInput = {
   atmosphere: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  userId: number
 }
 
 export type CityUpdateManyMutationInput = {
@@ -548,6 +572,17 @@ export type CityUncheckedUpdateManyInput = {
   atmosphere?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type CityListRelationFilter = {
+  every?: Prisma.CityWhereInput
+  some?: Prisma.CityWhereInput
+  none?: Prisma.CityWhereInput
+}
+
+export type CityOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringNullableListFilter<$PrismaModel = never> = {
@@ -575,6 +610,7 @@ export type CityCountOrderByAggregateInput = {
   atmosphere?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CityAvgOrderByAggregateInput = {
@@ -585,6 +621,7 @@ export type CityAvgOrderByAggregateInput = {
   safety?: Prisma.SortOrder
   culture?: Prisma.SortOrder
   atmosphere?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CityMaxOrderByAggregateInput = {
@@ -603,6 +640,7 @@ export type CityMaxOrderByAggregateInput = {
   atmosphere?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CityMinOrderByAggregateInput = {
@@ -621,6 +659,7 @@ export type CityMinOrderByAggregateInput = {
   atmosphere?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CitySumOrderByAggregateInput = {
@@ -631,11 +670,54 @@ export type CitySumOrderByAggregateInput = {
   safety?: Prisma.SortOrder
   culture?: Prisma.SortOrder
   atmosphere?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CityScalarRelationFilter = {
   is?: Prisma.CityWhereInput
   isNot?: Prisma.CityWhereInput
+}
+
+export type CityCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.CityCreateWithoutUserInput, Prisma.CityUncheckedCreateWithoutUserInput> | Prisma.CityCreateWithoutUserInput[] | Prisma.CityUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CityCreateOrConnectWithoutUserInput | Prisma.CityCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.CityCreateManyUserInputEnvelope
+  connect?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+}
+
+export type CityUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.CityCreateWithoutUserInput, Prisma.CityUncheckedCreateWithoutUserInput> | Prisma.CityCreateWithoutUserInput[] | Prisma.CityUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CityCreateOrConnectWithoutUserInput | Prisma.CityCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.CityCreateManyUserInputEnvelope
+  connect?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+}
+
+export type CityUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.CityCreateWithoutUserInput, Prisma.CityUncheckedCreateWithoutUserInput> | Prisma.CityCreateWithoutUserInput[] | Prisma.CityUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CityCreateOrConnectWithoutUserInput | Prisma.CityCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.CityUpsertWithWhereUniqueWithoutUserInput | Prisma.CityUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.CityCreateManyUserInputEnvelope
+  set?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  disconnect?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  delete?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  connect?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  update?: Prisma.CityUpdateWithWhereUniqueWithoutUserInput | Prisma.CityUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.CityUpdateManyWithWhereWithoutUserInput | Prisma.CityUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.CityScalarWhereInput | Prisma.CityScalarWhereInput[]
+}
+
+export type CityUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.CityCreateWithoutUserInput, Prisma.CityUncheckedCreateWithoutUserInput> | Prisma.CityCreateWithoutUserInput[] | Prisma.CityUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CityCreateOrConnectWithoutUserInput | Prisma.CityCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.CityUpsertWithWhereUniqueWithoutUserInput | Prisma.CityUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.CityCreateManyUserInputEnvelope
+  set?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  disconnect?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  delete?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  connect?: Prisma.CityWhereUniqueInput | Prisma.CityWhereUniqueInput[]
+  update?: Prisma.CityUpdateWithWhereUniqueWithoutUserInput | Prisma.CityUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.CityUpdateManyWithWhereWithoutUserInput | Prisma.CityUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.CityScalarWhereInput | Prisma.CityScalarWhereInput[]
 }
 
 export type CityCreateneighborhoodInput = {
@@ -669,6 +751,94 @@ export type CityUpdateOneRequiredWithoutImagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CityUpdateToOneWithWhereWithoutImagesInput, Prisma.CityUpdateWithoutImagesInput>, Prisma.CityUncheckedUpdateWithoutImagesInput>
 }
 
+export type CityCreateWithoutUserInput = {
+  cityName: string
+  country: string
+  status: $Enums.CityStatus
+  visitDate: string
+  coverImage: string
+  neighborhood?: Prisma.CityCreateneighborhoodInput | string[]
+  description: string
+  overallRating: number
+  budget: number
+  food: number
+  safety: number
+  culture: number
+  atmosphere: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.CityImageCreateNestedManyWithoutCityInput
+}
+
+export type CityUncheckedCreateWithoutUserInput = {
+  id?: number
+  cityName: string
+  country: string
+  status: $Enums.CityStatus
+  visitDate: string
+  coverImage: string
+  neighborhood?: Prisma.CityCreateneighborhoodInput | string[]
+  description: string
+  overallRating: number
+  budget: number
+  food: number
+  safety: number
+  culture: number
+  atmosphere: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  images?: Prisma.CityImageUncheckedCreateNestedManyWithoutCityInput
+}
+
+export type CityCreateOrConnectWithoutUserInput = {
+  where: Prisma.CityWhereUniqueInput
+  create: Prisma.XOR<Prisma.CityCreateWithoutUserInput, Prisma.CityUncheckedCreateWithoutUserInput>
+}
+
+export type CityCreateManyUserInputEnvelope = {
+  data: Prisma.CityCreateManyUserInput | Prisma.CityCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type CityUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.CityWhereUniqueInput
+  update: Prisma.XOR<Prisma.CityUpdateWithoutUserInput, Prisma.CityUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.CityCreateWithoutUserInput, Prisma.CityUncheckedCreateWithoutUserInput>
+}
+
+export type CityUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.CityWhereUniqueInput
+  data: Prisma.XOR<Prisma.CityUpdateWithoutUserInput, Prisma.CityUncheckedUpdateWithoutUserInput>
+}
+
+export type CityUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.CityScalarWhereInput
+  data: Prisma.XOR<Prisma.CityUpdateManyMutationInput, Prisma.CityUncheckedUpdateManyWithoutUserInput>
+}
+
+export type CityScalarWhereInput = {
+  AND?: Prisma.CityScalarWhereInput | Prisma.CityScalarWhereInput[]
+  OR?: Prisma.CityScalarWhereInput[]
+  NOT?: Prisma.CityScalarWhereInput | Prisma.CityScalarWhereInput[]
+  id?: Prisma.IntFilter<"City"> | number
+  cityName?: Prisma.StringFilter<"City"> | string
+  country?: Prisma.StringFilter<"City"> | string
+  status?: Prisma.EnumCityStatusFilter<"City"> | $Enums.CityStatus
+  visitDate?: Prisma.StringFilter<"City"> | string
+  coverImage?: Prisma.StringFilter<"City"> | string
+  neighborhood?: Prisma.StringNullableListFilter<"City">
+  description?: Prisma.StringFilter<"City"> | string
+  overallRating?: Prisma.IntFilter<"City"> | number
+  budget?: Prisma.IntFilter<"City"> | number
+  food?: Prisma.IntFilter<"City"> | number
+  safety?: Prisma.IntFilter<"City"> | number
+  culture?: Prisma.IntFilter<"City"> | number
+  atmosphere?: Prisma.IntFilter<"City"> | number
+  createdAt?: Prisma.DateTimeFilter<"City"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"City"> | Date | string
+  userId?: Prisma.IntFilter<"City"> | number
+}
+
 export type CityCreateWithoutImagesInput = {
   cityName: string
   country: string
@@ -685,6 +855,7 @@ export type CityCreateWithoutImagesInput = {
   atmosphere: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutCitiesInput
 }
 
 export type CityUncheckedCreateWithoutImagesInput = {
@@ -704,6 +875,7 @@ export type CityUncheckedCreateWithoutImagesInput = {
   atmosphere: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  userId: number
 }
 
 export type CityCreateOrConnectWithoutImagesInput = {
@@ -738,9 +910,88 @@ export type CityUpdateWithoutImagesInput = {
   atmosphere?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutCitiesNestedInput
 }
 
 export type CityUncheckedUpdateWithoutImagesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  cityName?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCityStatusFieldUpdateOperationsInput | $Enums.CityStatus
+  visitDate?: Prisma.StringFieldUpdateOperationsInput | string
+  coverImage?: Prisma.StringFieldUpdateOperationsInput | string
+  neighborhood?: Prisma.CityUpdateneighborhoodInput | string[]
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  overallRating?: Prisma.IntFieldUpdateOperationsInput | number
+  budget?: Prisma.IntFieldUpdateOperationsInput | number
+  food?: Prisma.IntFieldUpdateOperationsInput | number
+  safety?: Prisma.IntFieldUpdateOperationsInput | number
+  culture?: Prisma.IntFieldUpdateOperationsInput | number
+  atmosphere?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type CityCreateManyUserInput = {
+  id?: number
+  cityName: string
+  country: string
+  status: $Enums.CityStatus
+  visitDate: string
+  coverImage: string
+  neighborhood?: Prisma.CityCreateneighborhoodInput | string[]
+  description: string
+  overallRating: number
+  budget: number
+  food: number
+  safety: number
+  culture: number
+  atmosphere: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CityUpdateWithoutUserInput = {
+  cityName?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCityStatusFieldUpdateOperationsInput | $Enums.CityStatus
+  visitDate?: Prisma.StringFieldUpdateOperationsInput | string
+  coverImage?: Prisma.StringFieldUpdateOperationsInput | string
+  neighborhood?: Prisma.CityUpdateneighborhoodInput | string[]
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  overallRating?: Prisma.IntFieldUpdateOperationsInput | number
+  budget?: Prisma.IntFieldUpdateOperationsInput | number
+  food?: Prisma.IntFieldUpdateOperationsInput | number
+  safety?: Prisma.IntFieldUpdateOperationsInput | number
+  culture?: Prisma.IntFieldUpdateOperationsInput | number
+  atmosphere?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.CityImageUpdateManyWithoutCityNestedInput
+}
+
+export type CityUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  cityName?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumCityStatusFieldUpdateOperationsInput | $Enums.CityStatus
+  visitDate?: Prisma.StringFieldUpdateOperationsInput | string
+  coverImage?: Prisma.StringFieldUpdateOperationsInput | string
+  neighborhood?: Prisma.CityUpdateneighborhoodInput | string[]
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  overallRating?: Prisma.IntFieldUpdateOperationsInput | number
+  budget?: Prisma.IntFieldUpdateOperationsInput | number
+  food?: Prisma.IntFieldUpdateOperationsInput | number
+  safety?: Prisma.IntFieldUpdateOperationsInput | number
+  culture?: Prisma.IntFieldUpdateOperationsInput | number
+  atmosphere?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.CityImageUncheckedUpdateManyWithoutCityNestedInput
+}
+
+export type CityUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   cityName?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
@@ -807,7 +1058,9 @@ export type CitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   atmosphere?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
   images?: boolean | Prisma.City$imagesArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["city"]>
 
@@ -828,6 +1081,8 @@ export type CitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   atmosphere?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["city"]>
 
 export type CitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -847,6 +1102,8 @@ export type CitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   atmosphere?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["city"]>
 
 export type CitySelectScalar = {
@@ -866,20 +1123,27 @@ export type CitySelectScalar = {
   atmosphere?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
 }
 
-export type CityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cityName" | "country" | "status" | "visitDate" | "coverImage" | "neighborhood" | "description" | "overallRating" | "budget" | "food" | "safety" | "culture" | "atmosphere" | "createdAt" | "updatedAt", ExtArgs["result"]["city"]>
+export type CityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cityName" | "country" | "status" | "visitDate" | "coverImage" | "neighborhood" | "description" | "overallRating" | "budget" | "food" | "safety" | "culture" | "atmosphere" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["city"]>
 export type CityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   images?: boolean | Prisma.City$imagesArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CityCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type CityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type CityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type CityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type CityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $CityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "City"
   objects: {
     images: Prisma.$CityImagePayload<ExtArgs>[]
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -898,6 +1162,7 @@ export type $CityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     atmosphere: number
     createdAt: Date
     updatedAt: Date
+    userId: number
   }, ExtArgs["result"]["city"]>
   composites: {}
 }
@@ -1293,6 +1558,7 @@ readonly fields: CityFieldRefs;
 export interface Prisma__CityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   images<T extends Prisma.City$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.City$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CityImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1338,6 +1604,7 @@ export interface CityFieldRefs {
   readonly atmosphere: Prisma.FieldRef<"City", 'Int'>
   readonly createdAt: Prisma.FieldRef<"City", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"City", 'DateTime'>
+  readonly userId: Prisma.FieldRef<"City", 'Int'>
 }
     
 
@@ -1587,6 +1854,10 @@ export type CityCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.CityCreateManyInput | Prisma.CityCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CityIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1657,6 +1928,10 @@ export type CityUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Cities to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CityIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

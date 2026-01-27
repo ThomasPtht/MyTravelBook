@@ -693,7 +693,8 @@ export const CityScalarFieldEnum = {
   culture: 'culture',
   atmosphere: 'atmosphere',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId'
 } as const
 
 export type CityScalarFieldEnum = (typeof CityScalarFieldEnum)[keyof typeof CityScalarFieldEnum]
