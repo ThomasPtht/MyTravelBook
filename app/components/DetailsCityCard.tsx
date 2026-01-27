@@ -41,22 +41,16 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
     const destination = data;
 
     return (
-
-        <div className="">
-            <div className="flex items-center justify-between">
-            </div>
+        <div className="p-0 m-0">
+            <div className="flex items-center justify-between"></div>
             {destination.coverImage && (
-                <div className="relative w-full aspect-[4/3] overflow-hidden">
+                <div className="relative w-full aspect-[3/1] -mt-4 rounded-t-md overflow-hidden">
                     <img
                         src={destination.coverImage}
                         alt={destination.cityName}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover object-center"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent rounded-md" />
-                    {/* Badge en haut à droite */}
-                    <div className="absolute top-2 right-2 z-10">
-                        <Badge className='rounded-md capitalize' variant="orange">{destination.status}</Badge>
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                     {/* Infos en bas à gauche */}
                     <div className="absolute bottom-2 left-2 text-white z-10 m-2">
                         <div className="font-light text-2xl text-balance">{destination.cityName}</div>
@@ -64,7 +58,6 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
                             <MapPin size={18} />
                             {destination.country}
                         </div>
-
                     </div>
                 </div>
             )}
@@ -72,9 +65,14 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
 
                 <div className="flex flex-col gap-3 mb-4">
                     {destination.visitDate && (
-                        <div className=" flex text-muted-foreground items-center gap-1 mt-1">
-                            <Calendar size={18} />
-                            {destination.visitDate}
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="flex text-muted-foreground items-center gap-1 mt-1">
+                                <Calendar size={18} />
+                                {destination.visitDate}
+                            </div>
+                            <div>
+                                <Badge className='rounded-md capitalize' variant="orange">{destination.status}</Badge>
+                            </div>
                         </div>
                     )}
                     {/* Overall Rating */}
@@ -118,8 +116,16 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
                             ))}</div>
                         </span>
                     </div>
+                    <h3>My thoughts</h3>
                     <div className="text-muted-foreground">{destination.description}</div>
+
+
+                    <h3>Neighborhoods explored</h3>
+                    <div className="text-muted-foreground">{destination.neighborhood}</div>
                 </div>
+
+
+
 
 
             )}

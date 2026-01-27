@@ -1,7 +1,7 @@
 "use client"
 
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
-import DestinationsList from "./components/DestinationsList";
+import DestinationsList from "../components/DestinationsList";
 import { useState } from "react";
 
 

@@ -1,7 +1,5 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
+import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "./components/ReactQueryProvider";
 
@@ -15,29 +13,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "My Travel Book",
   description: "Memories from my trips around the world",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReactQueryProvider>
-        <div className="container mx-auto px-6 py-8">
-          <Header />
-          <main className="mt-8">
-            {children}
-          </main>
-        </div>
-        <Toaster />
+          {children}
+          <Toaster />
         </ReactQueryProvider>
       </body>
     </html>
