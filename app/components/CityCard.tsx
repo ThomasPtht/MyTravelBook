@@ -59,7 +59,27 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
         queryFn: fetchDestinations,
     });
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[300px]">
+                <div className="relative w-[80px] h-[80px] flex items-center justify-center">
+                    <ClipLoader
+                        color="#6b7280" // gris neutre Tailwind gray-500
+                        size={80}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
+                    />
+                    <img
+                        src="/airplane.svg"
+                        alt="Chargement..."
+                        className="absolute left-1/2 top-1/2 w-8 h-8 -translate-x-1/2 -translate-y-1/2 z-10 animate-spin-slow filter invert-47 sepia-99 saturate-747 hue-rotate-167 brightness-95 contrast-92"
+                        style={{ animationDuration: '2.5s' }}
+                    />
+                </div>
+            </div>
+        );
+    }
     if (error) return <div>Error loading destinations</div>;
 
     return (
