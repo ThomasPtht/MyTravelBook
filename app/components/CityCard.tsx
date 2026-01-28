@@ -1,8 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Utensils } from 'lucide-react';
+import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Utensils, X } from 'lucide-react';
+import { useTransition } from 'react';
 
+// Import de l'action de suppression côté client
+import { deleteDestination } from "../actions/destination";
 
 
 export type DestinationType = {
@@ -22,9 +26,27 @@ export type DestinationType = {
     atmosphere: number,
 }
 
+
+import React, { useState } from 'react';
+
 const CityCard = ({ destination }: { destination: DestinationType }) => {
+    const [isPending, startTransition] = useTransition();
+    const [open, setOpen] = useState(false);
 
+    // Ouvre la dialog de confirmation
+    const handleOpenDialog = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setOpen(true);
+    };
 
+    // Confirme la suppression
+    const handleConfirmDelete = async () => {
+        setOpen(false);
+        startTransition(async () => {
+            await deleteDestination(destination.id);
+
+        });
+    };
 
     async function fetchDestinations() {
         const res = await fetch("/api/destinations");
@@ -40,16 +62,45 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error loading destinations</div>;
 
-
-
     return (
         <div>
             <Card className="group overflow-hidden border border-border bg-card hover:shadow-xl transition-all duration-300 cursor-pointer">
-
-                <div className="flex items-center justify-between">
-                </div>
+                <div className="flex items-center justify-between"></div>
                 {destination.coverImage && (
                     <div className="relative w-full aspect-[4/3] overflow-hidden">
+                        {/* Bouton croix suppression */}
+                        <button
+                            onClick={handleOpenDialog}
+                            className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
+                            title="Supprimer cette destination"
+                        >
+                            <X size={18} />
+                        </button>
+                        {/* Dialog de confirmation */}
+                        <Dialog open={open} onOpenChange={setOpen}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Supprimer la destination ?</DialogTitle>
+                                </DialogHeader>
+                                <p>Cette action est irréversible. Voulez-vous vraiment supprimer <b>{destination.cityName}</b> ?</p>
+                                <DialogFooter>
+                                    <button
+                                        className="px-4 py-2 rounded bg-muted text-foreground hover:bg-muted/80 cursor-pointer mr-2"
+                                        onClick={() => setOpen(false)}
+                                        disabled={isPending}
+                                    >
+                                        Annuler
+                                    </button>
+                                    <button
+                                        className="px-4 py-2 rounded bg-destructive text-white hover:bg-destructive/80 cursor-pointer"
+                                        onClick={handleConfirmDelete}
+                                        disabled={isPending}
+                                    >
+                                        Supprimer
+                                    </button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                         <img
                             src={destination.coverImage}
                             alt={destination.cityName}

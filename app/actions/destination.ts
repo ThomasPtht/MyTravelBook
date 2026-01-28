@@ -43,6 +43,39 @@ export async function createDestination(values: unknown) {
 }
 
 
+export async function deleteDestination(values: unknown) {
+
+
+    const getDestination = await prisma.city.findUnique({
+        where: {
+            id: Number(values)
+        }
+    });
+
+    if (!getDestination) {
+        return {
+            success: false,
+            error: "Destination not found"
+        }
+    }
+
+    try {
+        const deleteDestination = await prisma.city.delete({
+            where: {
+                id: Number(values)
+            }
+        });
+
+
+
+        return { success: true, data: deleteDestination };
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: "Error deleting destination" };
+    }
+}
+
+
 
 
 

@@ -23,8 +23,8 @@ const Header = () => {
                 <h1 className='text-5xl font-light'>My Travel Book</h1>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                        <Avatar className='cursor pointer' size="lg">
+                            <AvatarImage src="/public/avatar.png"  />
 
                             <AvatarFallback>
                                 {(session?.user as { username?: string })?.username?.[0]?.toUpperCase() ?? "U"}
@@ -32,8 +32,8 @@ const Header = () => {
                             <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuLabel>  {(session?.user as { username?: string })?.username?.[0]?.toUpperCase() ?? "U"}</DropdownMenuLabel>
+                    <DropdownMenuContent align='' className='w-56'>
+                        <DropdownMenuLabel>  {(session?.user as { username?: string })?.username ?? "U"}</DropdownMenuLabel>
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => signOut()}>Se déconnecter</DropdownMenuItem>

@@ -31,7 +31,17 @@ const DestinationsList = ({ status }: { status: "all" | "visited" | "wishlist" }
     if (error) return <div>Error loading destinations</div>;
 
     if (!data || data.length === 0) {
-        return <div>No destination to display</div>
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[300px] bg-muted/40 rounded-lg p-8">
+                <img
+                    src="/empty-data.png"
+                    alt="No destination to display"
+                    className="w-40 h-40 object-contain mb-4 opacity-80 "
+                />
+                <div className="text-lg font-semibold text-muted-foreground mb-2">Aucune destination à afficher</div>
+                <div className="text-sm text-muted-foreground">Ajoutez une destination pour commencer votre carnet de voyage !</div>
+            </div>
+        );
     }
 
     const filtered = status === "all"
