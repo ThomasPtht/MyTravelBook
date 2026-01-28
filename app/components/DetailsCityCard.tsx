@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Utensils } from "lucide-react"
 import { DestinationType } from "./CityCard";
 import { useQuery } from "@tanstack/react-query";
+import { ClipLoader } from "react-spinners";
 
 
 

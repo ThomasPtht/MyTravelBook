@@ -72,14 +72,20 @@ export default function LoginForm() {
                 />
                 <div className='flex justify-center '>
                     <Button className='w-full' type="submit">
-                        Login
+                        Sign In
                     </Button>
                 </div>
-                <Link href="/register" className="text-sm text-primary hover:underline flex justify-center">
-                    <p>Register</p>
-                </Link>
+
+                <div className="flex justify-center mt-2">
+                    <span className="text-sm text-muted-foreground">Don't have an account?{' '}
+                        <Link href="/register" className="text-primary font-bold hover:underline focus:underline outline-none">
+                            Create one
+                        </Link>
+                    </span>
+                </div>
+
 
             </form>
-        </Form>
+        </Form >
     );
 }

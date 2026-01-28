@@ -94,14 +94,20 @@ export default function RegisterForm() {
                         </FormItem>
                     )}
                 />
-                <div className="flex justify-center">
-                    <Button className="w-full" type="submit" disabled={mutation.isPending}>
-                        {mutation.isPending ? "Registering..." : "Register"}
+                <div className='flex justify-center '>
+                    <Button className='w-full' type="submit" disabled={mutation.isPending}>
+                        {mutation.isPending ? "Creating..." : "Create Account"}
+
                     </Button>
                 </div>
-                <Link href="/login" className="text-sm text-primary hover:underline flex justify-center">
-                    <p>Login</p>
-                </Link>
+
+                <div className="flex justify-center mt-2">
+                    <span className="text-sm text-muted-foreground">Already have an account?{' '}
+                        <Link href="/login" className="text-primary font-bold hover:underline focus:underline outline-none">
+                            Sign in
+                        </Link>
+                    </span>
+                </div>
 
 
             </form>

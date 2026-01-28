@@ -13,7 +13,7 @@ export type DestinationType = {
     id: number,
     cityName: string,
     country: string,
-    status: string,
+    status: "visited" | "wishlist",
     description: string,
     visitDate: string,
     coverImage: string,
@@ -28,6 +28,7 @@ export type DestinationType = {
 
 
 import React, { useState } from 'react';
+import { ClipLoader } from 'react-spinners';
 
 const CityCard = ({ destination }: { destination: DestinationType }) => {
     const [isPending, startTransition] = useTransition();
@@ -91,7 +92,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                         {/* Bouton croix suppression */}
                         <button
                             onClick={handleOpenDialog}
-                            className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
+                            className="absolute top-2 right-10 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
                             title="Supprimer cette destination"
                         >
                             <X size={18} />

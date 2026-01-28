@@ -9,7 +9,17 @@ import { ClipLoader, PropagateLoader } from "react-spinners";
 
 
 
-const DestinationsList = ({ status }: { status: "all" | "visited" | "wishlist" }) => {
+const DestinationsList = ({
+    status,
+    data,
+    isLoading,
+    error,
+}: {
+    status: "all" | "visited" | "wishlist";
+    data: DestinationType[] | undefined;
+    isLoading: boolean;
+    error: any;
+}) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
 
     const handleOpenChange = (open: boolean) => {
@@ -17,16 +27,6 @@ const DestinationsList = ({ status }: { status: "all" | "visited" | "wishlist" }
     };
 
 
-    async function fetchDestinations() {
-        const res = await fetch("/api/destinations");
-        if (!res.ok) throw new Error("Failed to fetch destinations");
-        return res.json();
-    }
-
-    const { data, isLoading, error } = useQuery<DestinationType[]>({
-        queryKey: ['destinations'],
-        queryFn: fetchDestinations,
-    });
 
     if (isLoading) {
         return (

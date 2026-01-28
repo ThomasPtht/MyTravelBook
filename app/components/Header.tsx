@@ -24,7 +24,7 @@ const Header = () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Avatar className='cursor pointer' size="lg">
-                            <AvatarImage src="/public/avatar.png"  />
+                            <AvatarImage src="/public/avatar.png" />
 
                             <AvatarFallback>
                                 {(session?.user as { username?: string })?.username?.[0]?.toUpperCase() ?? "U"}
@@ -32,7 +32,7 @@ const Header = () => {
                             <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                         </Avatar>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align='' className='w-56'>
+                    <DropdownMenuContent align='start' className='w-56'>
                         <DropdownMenuLabel>  {(session?.user as { username?: string })?.username ?? "U"}</DropdownMenuLabel>
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
