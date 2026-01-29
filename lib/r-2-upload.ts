@@ -17,7 +17,7 @@ export const uploadFileToS3 = async (formData: FormData) => {
         throw new Error("No file provided");
     }
 
-    if (file.size > 2 * 1024 * 1024) {
+    if (file.size > 10 * 1024 * 1024) {
         throw new Error("File size must be less than 2MB");
     }
 

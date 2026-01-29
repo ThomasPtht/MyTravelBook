@@ -44,10 +44,11 @@ export const authOptions = {
     ],
     callbacks: {
         async session({ session, token }: { session: Session; token: JWT }) {
-            // @ts-expect-error: id et username sont ajoutés via NextAuth callback
-            session.user.id = token.id;
-            // @ts-expect-error: username est ajouté via NextAuth callback
-            session.user.username = token.username;
+            // Ajoute id et username à la session côté client
+            if (session.user) {
+                (session.user as any).id = token.id;
+                (session.user as any).username = token.username;
+            }
             return session;
         },
         async jwt({ token, user }: { token: JWT; user?: User }) {

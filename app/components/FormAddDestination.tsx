@@ -21,11 +21,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 import { createDestination } from "../actions/destination"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { formSchema } from "../schema/schemas"
-import { RefreshCcw, Star } from "lucide-react"
+import { ImagePlus, RefreshCcw, Star } from "lucide-react"
 import { uploadDestinationCover } from "../actions/destination-image"
-import { TagsInput, TagsInputClear, TagsInputInput, TagsInputItem, TagsInputLabel, TagsInputList } from "@/components/ui/tags-input"
+import { TagsInput, TagsInputClear, TagsInputInput, TagsInputItem, TagsInputList } from "@/components/ui/tags-input"
 
 
 
@@ -34,6 +34,7 @@ import { TagsInput, TagsInputClear, TagsInputInput, TagsInputItem, TagsInputLabe
 
 export function FormAddDestination({ onClose }: { onClose: () => void }) {
     const [isLoading, setIsLoading] = useState(false)
+    const [gallery, setGallery] = useState<string[]>([]);
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -50,7 +51,8 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
             food: undefined,
             safety: undefined,
             culture: undefined,
-            atmosphere: undefined
+            atmosphere: undefined,
+            images: [],
         }
     })
 
@@ -60,21 +62,53 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
 
         try {
             let coverImageUrl = "";
-            // Si un fichier a été sélectionné
+            // Upload cover image if needed
             if (values.coverImage && typeof values.coverImage !== "string") {
                 const formData = new FormData();
                 formData.append("file", values.coverImage);
                 const result = await uploadDestinationCover(formData);
-                // Ce que l'on retourne 
                 coverImageUrl = result.url;
             } else if (typeof values.coverImage === "string") {
                 coverImageUrl = values.coverImage;
             }
 
-            const result = await createDestination({
+            // Upload gallery images (DataURL -> File -> upload) uniquement si status = 'visited' et gallery local non vide
+            let galleryImageUrls: string[] = [];
+            if (values.status === "visited" && Array.isArray(gallery) && gallery.length > 0) {
+                for (const dataUrl of gallery) {
+                    // Convert DataURL to Blob
+                    const arr = dataUrl.split(",");
+                    const match = arr[0].match(/:(.*?);/);
+                    const mime = match ? match[1] : "image/png";
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    const file = new File([u8arr], `gallery-image-${Date.now()}.png`, { type: mime });
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    const result = await uploadDestinationCover(formData); // Utilise la même fonction d'upload
+                    galleryImageUrls.push(result.url);
+                }
+            }
+
+            const destinationPayload: any = {
                 ...values,
                 coverImage: coverImageUrl,
-            });
+            };
+            if (values.status === "visited") {
+                destinationPayload.images = galleryImageUrls;
+            }
+            // Supprime tout champ contenant des DataURL ou le state local gallery
+            delete destinationPayload.gallery;
+            // Supprime aussi tout champ images s'il n'est pas une liste d'URL (sécurité)
+            if (destinationPayload.images && values.status !== "visited") {
+                delete destinationPayload.images;
+            }
+            const result = await createDestination(destinationPayload);
+            setGallery([]); // Vide la mémoire après soumission
 
             if (result.success) {
                 toast.success("Destination added successfully");
@@ -93,10 +127,12 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
     const watchStatus = form.watch("status")
 
 
+
     return (
         <div className="max-h-[80vh] overflow-y-auto">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <h2 className="text-lg font-medium">Add new destination</h2>
                     <div className="flex gap-4">
                         <FormField
                             control={form.control}
@@ -415,7 +451,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
 
                                             return (
                                                 <FormItem>
-                                                    <FormLabel className="flex justify-center">Budget</FormLabel>
+                                                    <FormLabel className="flex justify-center">Atmosphere</FormLabel>
                                                     <div className="flex gap-1">
                                                         {[1, 2, 3, 4, 5].map((star) => {
                                                             const isSelected = (field.value ?? 0) >= star;
@@ -466,25 +502,69 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                             />
 
 
-                            {/* <FormField
+                            <FormField
                                 control={form.control}
                                 name="images"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Gallery</FormLabel>
+                                        <FormLabel>Photo gallery (max 5)</FormLabel>
                                         <FormControl>
-                                            <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 cursor-pointer hover:bg-gray-50">
-                                                <span className="text-gray-500">Glissez-déposez ou cliquez pour ajouter des photos</span>
-                                                <input type="file" multiple accept="image/*" className="hidden" onChange={ } />
-                                            </label>
+                                            <>
+                                                {/* Affichage des miniatures */}
+                                                <div className="flex gap-2 mb-2">
+                                                    {gallery.map((img, idx) => (
+                                                        <div key={idx} className="relative">
+                                                            <img src={img} alt={`preview-${idx}`} className="w-20 h-20 object-cover rounded" />
+                                                            <button
+                                                                type="button"
+                                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                                                                onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                                                            >×</button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                {/* Input d'upload */}
+                                                <input
+                                                    type="file"
+                                                    id="photoUpload"
+                                                    accept="image/*"
+                                                    multiple
+                                                    className="hidden"
+                                                    onChange={(e) => {
+                                                        const files = e.target.files;
+                                                        if (!files) return;
+                                                        const filesToProcess = Array.from(files).slice(0, 5 - gallery.length);
+                                                        filesToProcess.forEach((file) => {
+                                                            const reader = new FileReader();
+                                                            reader.onload = (event) => {
+                                                                const result = event.target?.result as string;
+                                                                setGallery((prev) => [...prev, result]);
+                                                            };
+                                                            reader.readAsDataURL(file);
+                                                        });
+                                                        e.target.value = "";
+                                                    }}
+                                                />
+                                                <label
+                                                    htmlFor="photoUpload"
+                                                    className="flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-foreground/50 hover:bg-muted/50 transition-colors"
+                                                >
+                                                    <ImagePlus className="h-8 w-8 text-muted-foreground" />
+                                                    <span className="text-sm text-muted-foreground">
+                                                        Click to upload photos
+                                                    </span>
+                                                    <span className="text-xs text-muted-foreground">
+                                                        JPG, PNG, WebP (max 5 photos)
+                                                    </span>
+                                                </label>
+                                            </>
                                         </FormControl>
                                         <FormDescription>
-
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            /> */}
+                            />
                         </>
                     )}
 
@@ -534,6 +614,6 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                     </div>
                 </form>
             </Form>
-        </div>
+        </div >
     )
 }

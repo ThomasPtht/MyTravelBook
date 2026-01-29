@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import CityCard, { DestinationType } from './CityCard';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
 import DetailsCityCard from './DetailsCityCard';
 import { useState } from 'react';
 import { ClipLoader, PropagateLoader } from "react-spinners";
@@ -87,7 +87,9 @@ const DestinationsList = ({
 
             <Dialog open={!!selectedId} onOpenChange={handleOpenChange}>
                 <DialogContent className="w-fit! max-w-[90vw]!">
-                    {selectedId && (
+                    <DialogTitle className="sr-only">Destination details</DialogTitle>
+
+                    {typeof selectedId === "number" && (
                         <DetailsCityCard
                             onClose={() => setSelectedId(null)}
                             id={selectedId}

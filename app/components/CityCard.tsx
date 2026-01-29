@@ -153,7 +153,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                                 </div>
                             )}
                             {/* Overall Rating */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-0.5">
                                 {Array.from({ length: 5 }).map((_, i) => (
                                     <Star
                                         key={i}

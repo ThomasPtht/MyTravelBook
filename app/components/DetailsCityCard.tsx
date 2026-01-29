@@ -4,6 +4,7 @@ import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Ute
 import { DestinationType } from "./CityCard";
 import { useQuery } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 
 
@@ -11,6 +12,7 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
     async function fetchOneDestination() {
         const res = await fetch(`/api/destinations/${id}`);
         if (!res.ok) throw new Error("Failed to fetch destination by id");
+        console.log("Fetched destination data:", await res.clone().json());
         return res.json();
     }
     console.log("Destination ID:", id);
@@ -93,7 +95,7 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
                         </div>
                     )}
                     {/* Overall Rating */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2  mt-8">
                         {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                                 key={i}
@@ -133,41 +135,84 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
                             ))}</div>
                         </span>
                     </div>
-                    <h3>My thoughts</h3>
+                    <h3 className="text-lg font-medium  mt-8">My thoughts</h3>
                     <div className="text-muted-foreground">{destination.description}</div>
 
-
-                    <h3>Neighborhoods explored</h3>
-                    <div className="text-muted-foreground">{destination.neighborhood}</div>
-                </div>
-
-
-
-
-
-            )}
-            {destination.status === "wishlist" && (
-
-                <div>
-                    <p className='text-muted-foreground text-xs'>MUST VISIT</p>
-                    <div className="flex flex-wrap gap-2">
-                        {Array.isArray(destination.neighborhood)
-                            ? (
-                                <>
-                                    {destination.neighborhood.slice(0, 3).map((tag: string) => (
-                                        <Badge key={tag} className=" rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-1 mt-2">{tag}</Badge>
-                                    ))}
-                                    {destination.neighborhood.length > 3 && (
-                                        <Badge className="rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-0.5 mt-2">+{destination.neighborhood.length - 3}</Badge>
-                                    )}
-                                </>
-                            )
-                            : <span>{destination.neighborhood}</span>
-                        }
+                </div>)}
+            <div className=" mt-8">
+                <h3 className="text-lg font-medium mb-2">Photo gallery</h3>
+                {Array.isArray(destination.images) && destination.images.length > 0 ? (
+                    <div className="w-full flex flex-col items-center">
+                        <div className="w-full max-w-[500px] relative">
+                            <Carousel className="w-full">
+                                <div className="relative">
+                                    <CarouselContent>
+                                        {destination.images.map((img: any, idx: number) => (
+                                            <CarouselItem key={img.imagePath + idx} className="aspect-[4/3] w-full flex items-center justify-center overflow-hidden rounded-lg">
+                                                <img
+                                                    src={img.imagePath}
+                                                    alt={`Photo ${idx + 1}`}
+                                                    className="max-h-[350px] max-w-full w-auto h-auto object-contain mx-auto my-0"
+                                                    style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+                                                />
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full shadow" />
+                                    <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full shadow" />
+                                </div>
+                            </Carousel>
+                        </div>
+                        <div className="flex gap-2 mt-2">
+                            {destination.images.map((img: any, idx: number) => (
+                                <button
+                                    key={img.imagePath + idx}
+                                    className="rounded-md overflow-hidden border-2 border-transparent focus:border-primary focus:outline-none"
+                                    style={{ width: 56, height: 56 }}
+                                    onClick={() => {
+                                        // Scroll to the corresponding slide
+                                        const carousel = document.querySelector('[data-slot=\"carousel-content\"] > div');
+                                        if (carousel) {
+                                            (carousel as HTMLElement).style.transform = `translateX(-${idx * 100}%)`;
+                                        }
+                                    }}
+                                    type="button"
+                                    aria-label={`Show photo ${idx + 1}`}
+                                >
+                                    <img
+                                        src={img.imagePath}
+                                        alt={`Thumbnail ${idx + 1}`}
+                                        className="w-full h-full object-cover object-center"
+                                    />
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="text-muted-foreground text-sm">No photos available.</div>
+                )}
+            </div>
+            <div>
 
-            )}
+                <h3 className="text-lg font-medium mt-8">{destination.status === "visited" ? "Neighborhood explored" : <span className="text-muted-foreground">MUST VISIT</span>}</h3>
+                <div className="flex flex-wrap gap-2">
+                    {Array.isArray(destination.neighborhood)
+                        ? (
+                            <>
+                                {destination.neighborhood.slice(0, 3).map((tag: string) => (
+                                    <Badge key={tag} className=" rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-1 mt-2">{tag}</Badge>
+                                ))}
+                                {destination.neighborhood.length > 3 && (
+                                    <Badge className="rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-0.5 mt-2">+{destination.neighborhood.length - 3}</Badge>
+                                )}
+                            </>
+                        )
+                        : <span>{destination.neighborhood}</span>
+                    }
+                </div>
+            </div>
+
+
 
         </div>
 

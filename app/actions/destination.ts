@@ -30,7 +30,12 @@ export async function createDestination(values: unknown) {
             ...normalizeDestination(validated.data),
             userId: Number(session.user.id),
         };
-
+        // Transforme images: string[] en nested create pour Prisma
+        if (data.images && Array.isArray(data.images)) {
+            data.images = {
+                create: data.images.map((url: string) => ({ imagePath: url })),
+            };
+        }
         const newDestination = await prisma.city.create({
             data
         });

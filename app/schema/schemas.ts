@@ -6,7 +6,6 @@ const wishlistSchema = z.object({
     status: z.literal("wishlist"),
     coverImage: z.union([z.string(), z.instanceof(File)]),
     neighborhood: z.array(z.string()).optional(),
-
 });
 
 const visitedSchema = wishlistSchema.extend({
@@ -19,6 +18,7 @@ const visitedSchema = wishlistSchema.extend({
     culture: z.number().int(),
     atmosphere: z.number().int(),
     description: z.string().optional(),
+    images: z.array(z.union([z.string(), z.instanceof(File)])),
 });
 
 export const formSchema = z.discriminatedUnion("status", [

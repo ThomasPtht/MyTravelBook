@@ -4,6 +4,7 @@ export function normalizeDestination(data: any) {
         country: data.country,
         status: data.status ?? "visited",
         coverImage: data.coverImage ?? "",
+        images: data.images ?? [],
         description: data.description ?? "",
         budget: data.budget ?? 0,
         overallRating: data.overallRating ?? 0,
