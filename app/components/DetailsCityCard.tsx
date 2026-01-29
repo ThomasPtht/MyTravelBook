@@ -60,10 +60,10 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
     const destination = data;
 
     return (
-        <div className="p-0 m-0">
+        <div className="p-0 m-0 relative">
             <div className="flex items-center justify-between"></div>
             {destination.coverImage && (
-                <div className="relative w-full aspect-[3/1] -mt-4 rounded-t-md overflow-hidden">
+                <div className="relative w-full aspect-[3/1] overflow-hidden">
                     <img
                         src={destination.coverImage}
                         alt={destination.cityName}

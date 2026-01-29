@@ -21,39 +21,39 @@ const Header = () => {
         <div>
             <div className='flex items-center justify-between'>
                 <h1 className='text-5xl font-light'>My Travel Book</h1>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Avatar className='cursor pointer' size="lg">
-                            <AvatarImage src="/public/avatar.png" />
 
-                            <AvatarFallback>
-                                {(session?.user as { username?: string })?.username?.[0]?.toUpperCase() ?? "U"}
-                            </AvatarFallback>
-                            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-                        </Avatar>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='start' className='w-56'>
-                        <DropdownMenuLabel>  {(session?.user as { username?: string })?.username ?? "U"}</DropdownMenuLabel>
-                        <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => signOut()}>Se déconnecter</DropdownMenuItem>
-                            </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                </DropdownMenu>
             </div>
-            <div className='flex items-center justify-between mt-2'>
-                <p className="text-xl text-muted-foreground">Explore, rate and remember your favorite cities</p>
-
-
-                <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger> <Button><Plus />Add destination</Button></DialogTrigger>
-                    <DialogContent className="!w-fit !max-w-[90vw]" >
-                        <FormAddDestination onClose={() => setOpen(false)} />
-                    </DialogContent>
-                </Dialog>
-
-
+            <div className='flex items-center justify-between mt-2 gap-4'>
+                <div className="flex-grow">
+                    <p className="text-xl text-muted-foreground">Explore, rate and remember your favorite cities</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger> <Button><Plus />Add destination</Button></DialogTrigger>
+                        <DialogContent className="!w-fit !max-w-[90vw]" >
+                            <FormAddDestination onClose={() => setOpen(false)} />
+                        </DialogContent>
+                    </Dialog>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Avatar className='cursor pointer' size="lg">
+                                <AvatarImage src="/public/avatar.png" />
+                                <AvatarFallback>
+                                    {(session?.user as { username?: string })?.username?.[0]?.toUpperCase() ?? "U"}
+                                </AvatarFallback>
+                                <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+                            </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align='start' className='w-56'>
+                            <DropdownMenuLabel>  {(session?.user as { username?: string })?.username ?? "U"}</DropdownMenuLabel>
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => signOut()}>Se déconnecter</DropdownMenuItem>
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
         </div>
     )
