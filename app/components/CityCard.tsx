@@ -62,8 +62,8 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-[300px]">
-                <div className="relative w-[80px] h-[80px] flex items-center justify-center">
+            <div className="flex items-center justify-center min-h-75">
+                <div className="relative w-20 h-20 flex items-center justify-center">
                     <ClipLoader
                         color="#6b7280" // gris neutre Tailwind gray-500
                         size={80}
@@ -88,7 +88,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
             <Card className="group overflow-hidden border border-border bg-card hover:shadow-xl transition-all duration-300 cursor-pointer">
                 <div className="flex items-center justify-between"></div>
                 {destination.coverImage && (
-                    <div className="relative w-full aspect-[4/3] overflow-hidden">
+                    <div className="relative w-full aspect-4/3 overflow-hidden">
                         {/* Bouton croix suppression */}
                         <button
                             onClick={handleOpenDialog}
@@ -127,7 +127,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                             alt={destination.cityName}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent rounded-md" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent rounded-md" />
                         {/* Badge en haut à droite */}
                         <div className="absolute top-2 right-2 z-10">
                             <Badge className='rounded-md capitalize' variant="orange">{destination.status}</Badge>

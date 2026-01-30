@@ -176,7 +176,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                                 <FormLabel>Status</FormLabel>
                                 <FormControl>
                                     <Select value={field.value} onValueChange={field.onChange}>
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-45">
                                             <SelectValue placeholder="Select status" />
                                         </SelectTrigger>
                                         <SelectContent>

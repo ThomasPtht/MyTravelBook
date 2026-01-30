@@ -21,16 +21,10 @@ const Header = () => {
         <div>
             <div className='flex items-center justify-between'>
                 <h1 className='text-5xl font-light'>My Travel Book</h1>
-
-            </div>
-            <div className='flex items-center justify-between mt-2 gap-4'>
-                <div className="flex-grow">
-                    <p className="text-xl text-muted-foreground">Explore, rate and remember your favorite cities</p>
-                </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
                     <Dialog open={open} onOpenChange={setOpen}>
                         <DialogTrigger> <Button><Plus />Add destination</Button></DialogTrigger>
-                        <DialogContent className="!w-fit !max-w-[90vw]" >
+                        <DialogContent className="w-fit! max-w-[90vw]!" >
                             <FormAddDestination onClose={() => setOpen(false)} />
                         </DialogContent>
                     </Dialog>
@@ -54,6 +48,14 @@ const Header = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
+
+            </div>
+
+            <div className='flex items-center justify-between mt-2 gap-4'>
+                <div className="grow">
+                    <p className="text-xl text-muted-foreground">Explore, rate and remember your favorite cities</p>
+                </div>
+
             </div>
         </div>
     )

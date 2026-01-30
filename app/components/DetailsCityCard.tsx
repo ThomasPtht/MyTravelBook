@@ -9,6 +9,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 
 const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) => {
+    
     async function fetchOneDestination() {
         const res = await fetch(`/api/destinations/${id}`);
         if (!res.ok) throw new Error("Failed to fetch destination by id");
