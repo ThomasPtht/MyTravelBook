@@ -60,8 +60,8 @@ const DestinationsList = ({
                     alt="No destination to display"
                     className="w-40 h-40 object-contain mb-4 opacity-80 "
                 />
-                <div className="text-lg font-semibold text-muted-foreground mb-2">Aucune destination à afficher</div>
-                <div className="text-sm text-muted-foreground">Ajoutez une destination pour commencer votre carnet de voyage !</div>
+                <div className="text-lg font-semibold text-muted-foreground mb-2">No destination to display</div>
+                <div className="text-sm text-muted-foreground">Add a destinatation to continue to explore the world!</div>
             </div>
         );
     }

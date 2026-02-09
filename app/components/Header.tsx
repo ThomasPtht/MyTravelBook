@@ -23,14 +23,16 @@ const Header = () => {
                 <h1 className='text-5xl font-light'>My Travel Book</h1>
                 <div className="flex items-center gap-4">
                     <Dialog open={open} onOpenChange={setOpen}>
-                        <DialogTrigger> <Button><Plus />Add destination</Button></DialogTrigger>
+                        <DialogTrigger asChild>
+                            <Button><Plus />Add destination</Button>
+                        </DialogTrigger>
                         <DialogContent className="w-fit! max-w-[90vw]!" >
                             <FormAddDestination onClose={() => setOpen(false)} />
                         </DialogContent>
                     </Dialog>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Avatar className='cursor pointer' size="lg">
+                            <Avatar data-testid="avatar-trigger" className='cursor pointer' size="lg">
                                 <AvatarImage src="/public/avatar.png" />
                                 <AvatarFallback>
                                     {(session?.user as { username?: string })?.username?.[0]?.toUpperCase() ?? "U"}
@@ -38,7 +40,7 @@ const Header = () => {
                                 <AvatarBadge className="bg-green-600 dark:bg-green-800" />
                             </Avatar>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align='start' className='w-56'>
+                        <DropdownMenuContent align='start' className='w-56' data-testid="dropdown-menu-content">
                             <DropdownMenuLabel>  {(session?.user as { username?: string })?.username ?? "U"}</DropdownMenuLabel>
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
