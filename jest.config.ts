@@ -6,6 +6,9 @@
 import type { Config } from 'jest';
 
 const config: Config = {
+  transform: {
+    '^.+\\.(ts|tsx|js|jsx)$': 'babel-jest',
+  },
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -35,10 +38,10 @@ const config: Config = {
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
 
-  // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
+  transformIgnorePatterns: [
+    '/node_modules/(?!@diceui/.*|uuid)',
+    '\\.pnp\\.[^/]+$'
+  ],
   //   "lcov",
   //   "clover"
   // ],

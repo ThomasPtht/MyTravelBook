@@ -173,10 +173,10 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                         name="status"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Status</FormLabel>
+                                <FormLabel id="status-label">Status</FormLabel>
                                 <FormControl>
                                     <Select value={field.value} onValueChange={field.onChange}>
-                                        <SelectTrigger className="w-45">
+                                        <SelectTrigger className="w-45" aria-labelledby="status-label">
                                             <SelectValue placeholder="Select status" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -575,31 +575,14 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                             <FormItem>
                                 <FormLabel>Neighborhoods explored</FormLabel>
                                 <FormControl>
-                                    <TagsInput
-                                        value={Array.isArray(field.value) ? field.value : field.value ? [field.value] : []}
-                                        onValueChange={field.onChange}
-                                        editable
-                                        addOnPaste
-                                    >
-
-                                        <TagsInputList>
-                                            {(Array.isArray(field.value) ? field.value : field.value ? [field.value] : []).map((neigh) => (
-                                                <TagsInputItem key={neigh} value={neigh}>
-                                                    {neigh}
-                                                </TagsInputItem>
-                                            ))}
-                                            <TagsInputInput placeholder="Add neighborhood..." />
-                                        </TagsInputList>
-                                        <TagsInputClear asChild>
-                                            <Button variant="outline">
-                                                <RefreshCcw className="h-4 w-4" />
-                                                Clear
-                                            </Button>
-                                        </TagsInputClear>
-                                    </TagsInput>
+                                    <input
+                                        type="text"
+                                        placeholder="Add neighborhood..."
+                                        value={Array.isArray(field.value) ? field.value.join(", ") : field.value || ""}
+                                        onChange={e => field.onChange(e.target.value.split(",").map(v => v.trim()).filter(Boolean))}
+                                    />
                                 </FormControl>
                                 <FormDescription>
-
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
