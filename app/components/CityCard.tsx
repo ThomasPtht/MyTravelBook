@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Utensils, X } from 'lucide-react';
+import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Trash, Utensils, X } from 'lucide-react';
 import { useTransition } from 'react';
 
 // Import de l'action de suppression côté client
@@ -92,10 +92,10 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                         {/* Bouton croix suppression */}
                         <button
                             onClick={handleOpenDialog}
-                            className="absolute top-2 right-10 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
+                            className="absolute top-2 left-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/80 text-white rounded-full p-1 cursor-pointer"
                             title="Supprimer cette destination"
                         >
-                            <X size={18} />
+                            <Trash size={18} />
                         </button>
                         {/* Dialog de confirmation */}
                         <Dialog open={open} onOpenChange={setOpen}>
@@ -161,7 +161,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                                         className={`inline-block ${i < (destination.overallRating ?? 0) ? "fill-yellow-600 text-yellow-600" : "text-slate-200"}`}
                                     />
                                 ))}
-                                <span className="text-muted-foreground text-sm ">{destination.overallRating}/5</span>
+                                <span className="text-muted-foreground text-lg pl-2">{destination.overallRating}/5</span>
                             </div>
 
                             <div className="text-xs flex items-center gap-1">
@@ -193,7 +193,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                                     ))}</div>
                                 </span>
                             </div>
-                            <div className="text-muted-foreground">{destination.description}</div>
+                            <div className="text-muted-foreground line-clamp-2">{destination.description}</div>
                         </div>
 
                     </CardContent>
@@ -201,13 +201,13 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                 {destination.status === "wishlist" && (
                     <CardContent>
                         <div>
-                            <p className='text-muted-foreground text-xs'>MUST VISIT</p>
+                            <p className='text-muted-foreground text-xs my-3'>MUST VISIT</p>
                             <div className="flex flex-wrap gap-2">
                                 {Array.isArray(destination.neighborhood)
                                     ? (
                                         <>
                                             {destination.neighborhood.slice(0, 3).map((tag: string) => (
-                                                <Badge key={tag} className=" rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-1 mt-2">{tag}</Badge>
+                                                <Badge key={tag} className=" rounded-md bg-gray-200 text-secondary-foreground font-normal text-md px-3 py-1 mt-2">{tag}</Badge>
                                             ))}
                                             {destination.neighborhood.length > 3 && (
                                                 <Badge className="rounded-md bg-slate-100 text-secondary-foreground font-normal text-xs px-2 py-0.5 mt-2">+{destination.neighborhood.length - 3}</Badge>

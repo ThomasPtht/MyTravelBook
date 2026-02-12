@@ -575,15 +575,20 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                             <FormItem>
                                 <FormLabel>Neighborhoods explored</FormLabel>
                                 <FormControl>
-                                    <input
-                                        type="text"
-                                        placeholder="Add neighborhood..."
-                                        value={Array.isArray(field.value) ? field.value.join(", ") : field.value || ""}
-                                        onChange={e => field.onChange(e.target.value.split(",").map(v => v.trim()).filter(Boolean))}
-                                    />
+                                    <TagsInput
+                                        value={field.value || []}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <TagsInputList>
+                                            {Array.isArray(field.value) && field.value.map((tag: string, idx: number) => (
+                                                <TagsInputItem key={tag + idx} index={idx} value={tag} />
+                                            ))}
+                                            <TagsInputInput placeholder="Add neighborhood..." />
+                                            <TagsInputClear />
+                                        </TagsInputList>
+                                    </TagsInput>
                                 </FormControl>
-                                <FormDescription>
-                                </FormDescription>
+                                <FormDescription />
                                 <FormMessage />
                             </FormItem>
                         )}

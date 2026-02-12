@@ -10,6 +10,7 @@ import { useState } from "react";
 
 export default function HomeTabs() {
     const [tab, setTab] = useState<"all" | "visited" | "wishlist">("all");
+    const [sort, setSort] = useState<string>("");
 
 
 
@@ -28,6 +29,9 @@ export default function HomeTabs() {
     const totalWishlist = data?.filter(dest => dest.status === "wishlist").length || 0;
     const totalAll = data?.length || 0;
 
+
+    const sortData = (data: DestinationType[], criteria: string) => { switch (criteria) { case "high": return [...data].sort((a, b) => b.overallRating - a.overallRating); case "low": return [...data].sort((a, b) => a.overallRating - b.overallRating); case "date": return [...data].sort((a, b) => new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime()); default: return data; } };
+
     return (
         <div>
             <Tabs className='mb-10' value={tab} onValueChange={setTab} defaultValue="all">
@@ -37,7 +41,7 @@ export default function HomeTabs() {
                         <TabsTab value="visited">Visited ({totalVisited})</TabsTab>
                         <TabsTab value="wishlist">Wishlist ({totalWishlist})</TabsTab>
                     </TabsList>
-                    <Select>
+                    <Select value={sort} onValueChange={setSort}>
                         <SelectTrigger className="w-full max-w-40">
                             <ArrowDownWideNarrow />
                             <SelectValue placeholder="Select a filter" />
@@ -53,7 +57,7 @@ export default function HomeTabs() {
                     </Select>
                 </div>
             </Tabs>
-            <DestinationsList data={data} status={tab} isLoading={isLoading} error={error} />
+            <DestinationsList data={data ? sortData(data, sort) : []} status={tab} isLoading={isLoading} error={error} />
         </div>
     );
 }

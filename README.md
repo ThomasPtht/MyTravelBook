@@ -1,10 +1,17 @@
-** My Travel Book
+## My Travel Book
 
 A web application to keep track of the cities and countries you have visited or want to visit.
 
 Currently in development 🏗️
 
-*** technologies used : 
+
+![alt text](image-1.png)
+![alt text](image.png)
+![alt text](image-2.png)
+
+
+
+### Technologies used : 
 - Next.js 16 
 - TypeScript
 - Prisma ORM
@@ -19,7 +26,7 @@ Currently in development 🏗️
 - Tests with Jest and React Testing Library
 - Ci/CD with GitHub Actions
 
-*** Features :
+### Features :
 - Add destinations (cities and countries)
 - Mark destinations as visited or on wish list
 - View list of visited destinations and wish list

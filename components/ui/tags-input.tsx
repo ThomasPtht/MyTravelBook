@@ -1,6 +1,6 @@
 import * as TagsInputPrimitive from "@diceui/tags-input";
 import { X } from "lucide-react";
-import type * as React from "react";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
 function TagsInput({
@@ -47,15 +47,25 @@ function TagsInputList({ className, ...props }: React.ComponentProps<"div">) {
 
 function TagsInputInput({
   className,
+  onKeyDown,
   ...props
 }: React.ComponentProps<typeof TagsInputPrimitive.Input>) {
+  const ref = React.useRef<HTMLInputElement>(null);
   return (
     <TagsInputPrimitive.Input
+      ref={ref}
       data-slot="tags-input-input"
       className={cn(
         "flex-1 bg-transparent outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
+      onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+        onKeyDown?.(e);
+        // Prevent Enter from submitting parent form after tag is added
+        if (e.key === "Enter") {
+          e.preventDefault();
+        }
+      }}
       {...props}
     />
   );

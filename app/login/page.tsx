@@ -11,7 +11,7 @@ const LoginPage = () => {
             <div className="w-full max-w-md space-y-8">
                 <div className="text-center space-y-3">
                     <h1 className="text-4xl font-bold tracking-tight">
-                        Welcome back on My Travel Book !
+                        Welcome back on <br /> My Travel Book !
                     </h1>
                     <p className="text-lg text-muted-foreground">
                         Log in to continue your travel adventure
