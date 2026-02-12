@@ -590,7 +590,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                     />
 
                     <div className="flex gap-2 justify-end">
-                        <Button type="button" variant="outline">Cancel</Button>
+                        <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
                         <Button type="submit" disabled={isLoading}>
                             {isLoading ? "Adding..." : "Add destination"}
                         </Button>
