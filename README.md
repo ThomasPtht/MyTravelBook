@@ -5,9 +5,9 @@ A web application to keep track of the cities and countries you have visited or 
 Currently in development 🏗️
 
 
-![alt text](image-1.png)
-![alt text](image.png)
-![alt text](image-2.png)
+![login page](./public/login-page.png)
+![home page](./public/home-page.png)
+![form](./public/form.png)
 
 
 
