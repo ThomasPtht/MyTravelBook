@@ -11,14 +11,23 @@ const MapPage = async () => {
         .filter((value, index, self) => self.indexOf(value) === index)
         .length;
 
+    const wishlistCount = destinations.filter(dest => dest.status === "wishlist")
+        .map(dest => dest.country)
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .length;
+
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 py-10">
-            <h1 className="text-4xl font-bold mb-2">🌍 My Travel Map</h1>
-            <p className="text-muted-foreground mb-8">
-                {visitedCount} {visitedCount > 1 ? "countries" : "country"} visited
-            </p>
-            <div className="w-full max-w-5xl rounded-2xl overflow-hidden shadow-lg border bg-card p-4">
-                <WorldMap data={destinations} />
+        <div>
+            <div className='flex items-center gap-2 mb-4'>
+                <h2 className="text-lg">🌍 My Travel Map</h2>
+                <p className="text-muted-foreground mb-8">
+                    {visitedCount} {visitedCount > 1 ? "countries" : "country"} visited, {wishlistCount} {wishlistCount > 1 ? "countries" : "country"} on the wishlist
+                </p>
+            </div>
+            <div className="flex flex-col items-center justify-center min-h-screen px-4 py-10">
+                <div className="w-full max-w-5xl rounded-xl overflow-hidden shadow-lg border bg-card p-4">
+                    <WorldMap data={destinations} />
+                </div>
             </div>
         </div>
     )
