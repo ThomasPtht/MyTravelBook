@@ -5,7 +5,7 @@ import CityCard, { DestinationType } from './CityCard';
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
 import DetailsCityCard from './DetailsCityCard';
 import { useState } from 'react';
-import { ClipLoader, PropagateLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -31,6 +31,7 @@ const DestinationsList = ({
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-[300px]">
+
                 <div className="relative w-[80px] h-[80px] flex items-center justify-center">
                     <ClipLoader
                         color="#6b7280" // gris neutre Tailwind gray-500
@@ -84,7 +85,6 @@ const DestinationsList = ({
                     </div>
                 ))}
             </div>
-
             <Dialog open={!!selectedId} onOpenChange={handleOpenChange}>
                 <DialogContent className="w-fit! max-w-[90vw]!">
                     <DialogTitle className="sr-only">Destination details</DialogTitle>
