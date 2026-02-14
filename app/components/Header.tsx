@@ -25,7 +25,7 @@ const Header = () => {
         <div>
             <div className='flex items-center justify-between'>
                 <div className="flex items-center gap-6">
-                    <h1 className="font-sans text-4xl font-light tracking-tight text-foreground text-balance">
+                    <h1 onClick={() => router.push("/")} className="font-sans text-4xl font-light tracking-tight text-foreground text-balance cursor-pointer">
                         My Travel Book
                     </h1>
 
