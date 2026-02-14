@@ -55,6 +55,7 @@ export default function HomeTabs() {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
+
                 </div>
             </Tabs>
             <DestinationsList data={data ? sortData(data, sort) : []} status={tab} isLoading={isLoading} error={error} />

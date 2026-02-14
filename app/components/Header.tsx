@@ -2,16 +2,20 @@
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Plus } from 'lucide-react'
+import { BookOpen, Globe, Plus } from 'lucide-react'
 
 import { FormAddDestination } from './FormAddDestination'
 import { useState } from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { signOut, useSession } from "next-auth/react";
+import { usePathname, useRouter } from 'next/navigation';
 
 const Header = () => {
     const [open, setOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+    const activePage = pathname === "/map" ? "map" : "journal";
 
     const { data: session } = useSession();
     // @ts-expect-error: username is added via NextAuth callback
@@ -20,7 +24,35 @@ const Header = () => {
     return (
         <div>
             <div className='flex items-center justify-between'>
-                <h1 className='text-5xl font-light'>My Travel Book</h1>
+                <div className="flex items-center gap-6">
+                    <h1 className="font-sans text-4xl font-light tracking-tight text-foreground text-balance">
+                        My Travel Book
+                    </h1>
+
+                    {/* Navigation */}
+                    <nav className="inline-flex items-center rounded-lg border bg-muted p-1 gap-0.5">
+                        <button
+                            onClick={() => router.push("/")}
+                            className={`inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${activePage === "journal"
+                                ? "bg-background text-foreground shadow-sm border"
+                                : "text-muted-foreground hover:text-foreground"
+                                }`}
+                        >
+                            <BookOpen className="h-4 w-4" />
+                            Journal
+                        </button>
+                        <button
+                            onClick={() => router.push("/map")}
+                            className={`inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${activePage === "map"
+                                ? "bg-background text-foreground shadow-sm border"
+                                : "text-muted-foreground hover:text-foreground"
+                                }`}
+                        >
+                            <Globe className="h-4 w-4" />
+                            Map
+                        </button>
+                    </nav>
+                </div>
                 <div className="flex items-center gap-4">
                     <Dialog open={open} onOpenChange={setOpen}>
                         <DialogTrigger asChild>

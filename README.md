@@ -7,7 +7,9 @@ Currently in development 🏗️
 
 ![login page](./public/login-page.png)
 ![home page](./public/home-page.png)
+![map page](./public/map-page.png)
 ![form](./public/form.png)
+
 
 
 
@@ -30,6 +32,8 @@ Currently in development 🏗️
 - Add destinations (cities and countries)
 - Mark destinations as visited or on wish list
 - View list of visited destinations and wish list
+- Map view of visited/wish list destinations
+- User authentication
 
 
 ## Setup Jest (tests unitaires)

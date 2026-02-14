@@ -27,25 +27,25 @@ const WorldMap = ({ data }: { data: DestinationType[] }) => {
 
     const getFillColor = (status: string | null) => {
         switch (status) {
-            case "visited": return "#4ade80";
-            case "wishlist": return "#facc15";
+            case "visited": return "#16a34a";
+            case "wishlist": return "#e8915a";
             default: return "#D6D6DA";
         }
     };
 
     const getHoverColor = (status: string | null) => {
         switch (status) {
-            case "visited": return "#22c55e";
-            case "wishlist": return "#eab308";
+            case "visited": return "#15803d";
+            case "wishlist": return "#d97a3e";
             default: return "#F53";
         }
     };
 
     return (
-        <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto", position: "relative", overflow: "hidden" }}>
+        <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto", position: "relative" }}>
             {/* Tooltip en haut à gauche */}
             {hoveredCountry && (
-                <div className="flex items-center absolute top-4 left-4 z-10 bg-background/90 backdrop-blur-sm border rounded-lg px-4 py-2 shadow-md">
+                <div className="flex items-center gap-2 absolute top-4 left-4 z-10 bg-background/90 backdrop-blur-sm border rounded-lg px-4 py-2 shadow-md">
                     <p className="font-semibold text-sm">{hoveredCountry.name}</p>
                     <p className="text-xs text-muted-foreground">
                         {hoveredCountry.status === "visited" && "Visited ✅"}
@@ -93,6 +93,15 @@ const WorldMap = ({ data }: { data: DestinationType[] }) => {
                             })
                     }
                 </Geographies>
+
+                {/* Légende en bas à droite, directement dans le SVG */}
+                <g transform="translate(620, 360)">
+                    <rect x="0" y="0" width="160" height="30" rx="6" fill="white" fillOpacity="0.9" stroke="#e5e7eb" />
+                    <circle cx="16" cy="15" r="5" fill="#16a34a" />
+                    <text x="28" y="19" fontSize="10" fill="#555">Visited</text>
+                    <circle cx="96" cy="15" r="5" fill="#e8915a" />
+                    <text x="108" y="19" fontSize="10" fill="#555">Wishlist</text>
+                </g>
             </ComposableMap>
         </div>
     );
