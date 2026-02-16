@@ -9,7 +9,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 
 const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) => {
-    
+
     async function fetchOneDestination() {
         const res = await fetch(`/api/destinations/${id}`);
         if (!res.ok) throw new Error("Failed to fetch destination by id");
@@ -61,10 +61,10 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
     const destination = data;
 
     return (
-        <div className="p-0 m-0 relative">
+        <div className="p-0 m-0 relative w-full max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between"></div>
             {destination.coverImage && (
-                <div className="relative w-full aspect-[3/1] overflow-hidden">
+                <div className="relative w-full aspect-[3/1]">
                     <img
                         src={destination.coverImage}
                         alt={destination.cityName}
@@ -83,7 +83,7 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
             )}
             {destination.status === "visited" && (
 
-                <div className="flex flex-col gap-3 mb-4">
+                <div className="flex flex-col gap-3 pt-4">
                     {destination.visitDate && (
                         <div className="flex items-center justify-between mt-1">
                             <div className="flex text-muted-foreground items-center gap-1 mt-1">
@@ -96,7 +96,7 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
                         </div>
                     )}
                     {/* Overall Rating */}
-                    <div className="flex items-center gap-2  mt-8">
+                    <div className="flex items-center gap-2 mt-4">
                         {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                                 key={i}
@@ -111,29 +111,45 @@ const DetailsCityCard = ({ onClose, id }: { onClose: () => void; id: number }) =
 
                     </div>
                     <div className="flex w-full justify-between text-xs">
-                        <span className="flex flex-col items-center"><DollarSign className='text-muted-foreground' size={18} />
+                        <span className="flex flex-col items-center gap-1">
+                            <div className="flex items-center gap-1"><DollarSign className='text-muted-foreground' size={18} /><span className="text-muted-foreground">Budget</span></div>
                             <div className="flex">
-                                {Array.from({ length: destination.budget ?? 0 }).map((_, i) => (
-                                    <div key={i} ><Star size={10} /></div>
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star key={i} size={10} fill={i < (destination.budget ?? 0) ? "#000" : "none"} stroke={i < (destination.budget ?? 0) ? "#000" : "#d1d5db"} className={i < (destination.budget ?? 0) ? "" : "text-slate-200"} />
                                 ))}
                             </div>
                         </span>
-                        <span className="flex flex-col items-center"><Utensils className='text-muted-foreground' size={18} />
-                            <div> {Array.from({ length: destination.food ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}</div></span>
-                        <span className='flex flex-col items-center'><ShieldCheck className='text-muted-foreground' size={18} />
-                            <div>{Array.from({ length: destination.safety ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}</div></span>
-                        <span className='flex flex-col items-center'><Palette className='text-muted-foreground' size={18} />
-                            <div>{Array.from({ length: destination.culture ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}</div></span>
-                        <span className='flex flex-col items-center'><Sparkles className='text-muted-foreground' size={18} />
-                            <div>{Array.from({ length: destination.atmosphere ?? 0 }).map((_, i) => (
-                                <div key={i} className="w-1 h-1 rounded-full bg-foreground inline-block mx-0.5"></div>
-                            ))}</div>
+                        <span className="flex flex-col items-center gap-1">
+                            <div className="flex items-center gap-1"><Utensils className='text-muted-foreground' size={18} /><span className="text-muted-foreground">Food</span></div>
+                            <div className="flex">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star key={i} size={10} fill={i < (destination.food ?? 0) ? "#000" : "none"} stroke={i < (destination.food ?? 0) ? "#000" : "#d1d5db"} className={i < (destination.food ?? 0) ? "" : "text-slate-200"} />
+                                ))}
+                            </div>
+                        </span>
+                        <span className='flex flex-col items-center gap-1'>
+                            <div className="flex items-center gap-1"><ShieldCheck className='text-muted-foreground' size={18} /><span className="text-muted-foreground">Safety</span></div>
+                            <div className="flex">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star key={i} size={10} fill={i < (destination.safety ?? 0) ? "#000" : "none"} stroke={i < (destination.safety ?? 0) ? "#000" : "#d1d5db"} className={i < (destination.safety ?? 0) ? "" : "text-slate-200"} />
+                                ))}
+                            </div>
+                        </span>
+                        <span className='flex flex-col items-center gap-1'>
+                            <div className="flex items-center gap-1"><Palette className='text-muted-foreground' size={18} /><span className="text-muted-foreground">Culture</span></div>
+                            <div className="flex">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star key={i} size={10} fill={i < (destination.culture ?? 0) ? "#000" : "none"} stroke={i < (destination.culture ?? 0) ? "#000" : "#d1d5db"} className={i < (destination.culture ?? 0) ? "" : "text-slate-200"} />
+                                ))}
+                            </div>
+                        </span>
+                        <span className='flex flex-col items-center gap-1'>
+                            <div className="flex items-center gap-1"><Sparkles className='text-muted-foreground' size={18} /><span className="text-muted-foreground">Atmosphere</span></div>
+                            <div className="flex">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star key={i} size={10} fill={i < (destination.atmosphere ?? 0) ? "#000" : "none"} stroke={i < (destination.atmosphere ?? 0) ? "#000" : "#d1d5db"} className={i < (destination.atmosphere ?? 0) ? "" : "text-slate-200"} />
+                                ))}
+                            </div>
                         </span>
                     </div>
                     <h3 className="text-lg font-medium  mt-8">My thoughts</h3>

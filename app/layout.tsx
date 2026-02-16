@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
@@ -19,7 +20,7 @@ export const metadata = {
     description: "Memories from my trips around the world",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

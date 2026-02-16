@@ -86,7 +86,7 @@ const DestinationsList = ({
                 ))}
             </div>
             <Dialog open={!!selectedId} onOpenChange={handleOpenChange}>
-                <DialogContent className="w-fit! max-w-[90vw]!">
+                <DialogContent className="w-full max-w-[90vw] max-h-[90vh] overflow-y-auto">
                     <DialogTitle className="sr-only">Destination details</DialogTitle>
 
                     {typeof selectedId === "number" && (
