@@ -14,5 +14,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
-      - run: npm install
+      - run: npm ci #more fast than npm install
+      - run : npx tsc --noEmit #check type
       - run: npm test -- --watchAll=false
+      - run: npm audit --audit-level=moderate #check security vulnerabilities
