@@ -1,14 +1,26 @@
 import { NextResponse } from "next/server";
 import * as argon2 from "argon2";
 import { prisma } from "@/lib/prisma";
+import { registerSchema } from "@/app/schema/schemas";
 
 export async function POST(request: Request) {
-    const { username, email, password } = await request.json();
+    const body = await request.json();
+
+    // Validation des inputs
+    const validated = registerSchema.safeParse(body);
+    if (!validated.success) {
+        return NextResponse.json(
+            { error: "Validation failed", details: validated.error.flatten().fieldErrors },
+            { status: 400 }
+        );
+    }
+
+    const { username, email, password } = validated.data;
 
     // Vérifie si l'utilisateur existe déjà
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-        return NextResponse.json({ error: "User already exists" }, { status: 400 });
+        return NextResponse.json({ error: "Registration failed" }, { status: 400 });
     }
 
     // Hash le mot de passe
@@ -19,5 +31,8 @@ export async function POST(request: Request) {
         data: { username, email, password: hashedPassword },
     });
 
-    return NextResponse.json({ user });
+    // Exclure le mot de passe de la réponse
+    const { password: _, ...userWithoutPassword } = user;
+
+    return NextResponse.json({ user: userWithoutPassword });
 }
