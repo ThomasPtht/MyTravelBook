@@ -50,6 +50,12 @@ export async function createDestination(values: unknown) {
 
 export async function deleteDestination(values: unknown) {
 
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user?.id) {
+        return { success: false, error: "Unauthorized" };
+    }
+
+    const userId = Number(session.user.id);
 
     const getDestination = await prisma.city.findUnique({
         where: {
@@ -62,6 +68,11 @@ export async function deleteDestination(values: unknown) {
             success: false,
             error: "Destination not found"
         }
+    }
+
+    // Vérifie que l'utilisateur est bien le propriétaire
+    if (getDestination.userId !== userId) {
+        return { success: false, error: "Forbidden" };
     }
 
     try {
