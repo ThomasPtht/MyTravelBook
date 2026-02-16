@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(request: NextRequest) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 
-    const { pathname, method } = request.nextUrl;
+    const { pathname } = request.nextUrl;
+    const method = request.method;
 
     // Permet l'accès aux routes d'auth et register sans être connecté
     if (
