@@ -1,8 +1,7 @@
 "use client"
 
-import { useQuery } from '@tanstack/react-query'
 import CityCard, { DestinationType } from './CityCard';
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import DetailsCityCard from './DetailsCityCard';
 import { useState } from 'react';
 import { ClipLoader } from "react-spinners";
