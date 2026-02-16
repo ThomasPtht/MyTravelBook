@@ -1,5 +1,17 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    refresh: jest.fn(),
+  }),
+  usePathname: () => '/',
+}));
+
 // Mock du composant FormAddDestination pour éviter d'importer du code serveur/Prisma
 jest.mock('@/app/components/FormAddDestination', () => ({
   FormAddDestination: () => <div data-testid="mock-form-add-destination" />,
@@ -51,7 +63,7 @@ describe('Header', () => {
       expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(), // expires in 1 hour
     };
     render(
-      <SessionProvider session={mockSession} >
+      <SessionProvider session={mockSession}>
         <Header />
       </SessionProvider>
     );

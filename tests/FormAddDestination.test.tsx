@@ -1,4 +1,13 @@
-jest.mock('@/components/ui/tags-input');
+jest.mock('@/components/ui/tags-input', () => {
+    const React = require('react');
+    return {
+        TagsInput: React.forwardRef((props: any, ref: any) => React.createElement('div', { ref, ...props })),
+        TagsInputClear: React.forwardRef((props: any, ref: any) => React.createElement('div', { ref, ...props })),
+        TagsInputInput: React.forwardRef((props: any, ref: any) => React.createElement('div', { ref, ...props })),
+        TagsInputItem: React.forwardRef((props: any, ref: any) => React.createElement('div', { ref, ...props })),
+        TagsInputList: React.forwardRef((props: any, ref: any) => React.createElement('div', { ref, ...props })),
+    };
+});
 import { FormAddDestination } from "@/app/components/FormAddDestination";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { time } from "node:console";
@@ -20,6 +29,11 @@ jest.mock('../app/actions/destination', () => ({
     createDestination: jest.fn().mockResolvedValue({ success: true }),
 }));
 
+// Mock uploadDestinationCover action
+jest.mock('../app/actions/destination-image', () => ({
+    uploadDestinationCover: jest.fn().mockResolvedValue({ url: 'https://example.com/cover.png' }),
+}));
+
 describe('FormAddDestination', () => {
     it('should display form fields', () => {
         render(<FormAddDestination onClose={jest.fn()} />);
@@ -31,7 +45,7 @@ describe('FormAddDestination', () => {
         const descriptionInput = screen.getByLabelText(/Personal notes/i);
         const overallRatingText = screen.getByText(/Overall experience/i);
         const budgetText = screen.getByText(/Budget/i);
-        const neighborhoodInput = screen.getByLabelText(/Neighborhood/i);
+        const neighborhoodInput = screen.getByText(/Neighborhood/i);
         const atmosphereText = screen.getByText(/Atmosphere/i);
         const foodText = screen.getByText(/Food/i);
         const safetyText = screen.getByText(/Safety/i);
@@ -85,7 +99,7 @@ describe('FormAddDestination', () => {
         // Ratings (overallRating, budget, food, safety, culture, atmosphere)
         // On clique sur la 5e étoile de chaque rating (le plus simple)
         // overallRating
-        const overallStars = screen.getAllByLabelText('Overall experience')[0]?.parentElement?.querySelectorAll('svg');
+        const overallStars = screen.getAllByText('Overall experience')[0]?.parentElement?.querySelectorAll('svg');
         if (overallStars && overallStars.length >= 5) fireEvent.click(overallStars[4]);
         // budget
         const budgetStars = screen.getAllByText('Budget')[0]?.parentElement?.querySelectorAll('svg');
@@ -104,7 +118,7 @@ describe('FormAddDestination', () => {
         if (atmosphereStars && atmosphereStars.length >= 5) fireEvent.click(atmosphereStars[4]);
         // Simuler une image pour images[] (gallery)
         // On simule l'upload d'une image dans l'input "Photo gallery (max 5)"
-        const galleryInput = screen.getByLabelText(/Photo gallery/i, { selector: 'input[type="file"]' });
+        const galleryInput = document.getElementById('photoUpload') as HTMLInputElement;
         const galleryFile = new File(['dummy'], 'gallery.png', { type: 'image/png' });
         fireEvent.change(galleryInput, { target: { files: [galleryFile] } });
         // Submit
