@@ -1,11 +1,12 @@
 import Header from "../components/Header";
 import { Toaster } from "@/components/ui/sonner";
 import "../globals.css";
+import type { ReactNode } from "react";
 
 export default function MapLayout({
     children,
 }: {
-    children: React.ReactNode;
+    children: ReactNode;
 }) {
     return (
         <div className="container mx-auto px-6 py-8">

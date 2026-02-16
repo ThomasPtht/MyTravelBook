@@ -26,7 +26,9 @@ Currently in development 🏗️
 - Authentification with NextAuth.js
 - Bucket S3 to store images of destinations : Cloudflare R2
 - Tests with Jest and React Testing Library
-- Ci/CD with GitHub Actions
+- CI/CD with GitHub Actions
+- Error monitoring with Sentry
+- Uptime monitoring with UptimeRobot
 
 ### Features :
 - Add destinations (cities and countries)
@@ -34,6 +36,14 @@ Currently in development 🏗️
 - View list of visited destinations and wish list
 - Map view of visited/wish list destinations
 - User authentication
+
+### Security :
+- Security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy)
+- API route protection via middleware (authentication required for POST/PUT/DELETE)
+- Server-side input validation with Zod
+- Password hashing with Argon2
+- Ownership verification on delete operations
+- Password excluded from API responses
 
 
 ## Setup Jest (tests unitaires)
@@ -75,3 +85,7 @@ npm install --save-dev @babel/preset-react       # JSX/TSX to JS
 		'\\.pnp\\.[^/]+$'
 	],
 	```
+
+## Sentry
+Sentry is used to monitor errors and performance in production. It captures crashes, exceptions and slow transactions, allowing to debug issues remotely.
+
