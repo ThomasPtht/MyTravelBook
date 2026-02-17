@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useWatch } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 
@@ -17,16 +17,16 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { TagsInput, TagsInputClear, TagsInputInput, TagsInputItem, TagsInputList } from "@/components/ui/tags-input"
+import { Textarea } from "@/components/ui/textarea"
+import { useQueryClient } from "@tanstack/react-query"
+import { ImagePlus, Star } from "lucide-react"
+import { useState } from "react"
 import { toast } from "sonner"
 import { createDestination } from "../actions/destination"
-import { useEffect, useState } from "react"
-import { useQueryClient } from "@tanstack/react-query"
-import { formSchema } from "../schema/schemas"
-import { ImagePlus, RefreshCcw, Star } from "lucide-react"
 import { uploadDestinationCover } from "../actions/destination-image"
-import { TagsInput, TagsInputClear, TagsInputInput, TagsInputItem, TagsInputList } from "@/components/ui/tags-input"
+import { formSchema } from "../schema/schemas"
 
 
 

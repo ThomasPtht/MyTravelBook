@@ -1,9 +1,9 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Trash, Utensils, X } from 'lucide-react';
-import { useTransition } from 'react';
+import React, { useTransition } from 'react';
 
 // Import de l'action de suppression côté client
 import { deleteDestination } from "../actions/destination";
@@ -34,6 +34,8 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
 
+    const queryClient = useQueryClient();
+
     // Ouvre la dialog de confirmation
     const handleOpenDialog = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -45,6 +47,7 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
         setOpen(false);
         startTransition(async () => {
             await deleteDestination(destination.id);
+            await queryClient.invalidateQueries({ queryKey: ['destinations'] });
 
         });
     };
@@ -101,23 +104,23 @@ const CityCard = ({ destination }: { destination: DestinationType }) => {
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>Supprimer la destination ?</DialogTitle>
+                                    <DialogTitle>Delete the destination ?</DialogTitle>
                                 </DialogHeader>
-                                <p>Cette action est irréversible. Voulez-vous vraiment supprimer <b>{destination.cityName}</b> ?</p>
+                                <p>This action is irreversible. Do you really want to delete <b>{destination.cityName}</b> ?</p>
                                 <DialogFooter>
                                     <button
                                         className="px-4 py-2 rounded bg-muted text-foreground hover:bg-muted/80 cursor-pointer mr-2"
-                                        onClick={() => setOpen(false)}
+                                        onClick={e => { e.stopPropagation(); setOpen(false); }}
                                         disabled={isPending}
                                     >
-                                        Annuler
+                                        Cancel
                                     </button>
                                     <button
                                         className="px-4 py-2 rounded bg-destructive text-white hover:bg-destructive/80 cursor-pointer"
                                         onClick={handleConfirmDelete}
                                         disabled={isPending}
                                     >
-                                        Supprimer
+                                        Delete
                                     </button>
                                 </DialogFooter>
                             </DialogContent>
