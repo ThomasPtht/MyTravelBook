@@ -1,4 +1,4 @@
-import React from 'react'
+
 import WorldMap from './components/worldMap'
 import { prisma } from '@/lib/prisma';
 

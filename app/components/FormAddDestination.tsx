@@ -22,6 +22,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { toast } from "sonner"
 import { createDestination } from "../actions/destination"
 import { useEffect, useState } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { formSchema } from "../schema/schemas"
 import { ImagePlus, RefreshCcw, Star } from "lucide-react"
 import { uploadDestinationCover } from "../actions/destination-image"
@@ -30,11 +31,11 @@ import { TagsInput, TagsInputClear, TagsInputInput, TagsInputItem, TagsInputList
 
 
 
-
-
 export function FormAddDestination({ onClose }: { onClose: () => void }) {
     const [isLoading, setIsLoading] = useState(false)
     const [gallery, setGallery] = useState<string[]>([]);
+    const queryClient = useQueryClient();
+
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -113,6 +114,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
             if (result.success) {
                 toast.success("Destination added successfully");
                 form.reset();
+                await queryClient.invalidateQueries({ queryKey: ['destinations'] });
                 onClose && onClose();
             } else {
                 toast.error("Failed to add destination");

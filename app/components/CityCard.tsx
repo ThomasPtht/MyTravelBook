@@ -27,7 +27,7 @@ export type DestinationType = {
 }
 
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 const CityCard = ({ destination }: { destination: DestinationType }) => {

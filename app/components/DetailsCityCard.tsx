@@ -1,4 +1,4 @@
-import * as React from "react"
+
 import { Badge } from "@/components/ui/badge"
 import { Calendar, DollarSign, MapPin, Palette, ShieldCheck, Sparkles, Star, Utensils } from "lucide-react"
 import { DestinationType } from "./CityCard";

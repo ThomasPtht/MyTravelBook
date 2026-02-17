@@ -3,7 +3,7 @@ import { DestinationType } from "@/app/components/CityCard";
 import DestinationsList from "@/app/components/DestinationsList";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowDownWideNarrow } from "lucide-react";
 
 import { useState } from "react";
@@ -24,6 +24,8 @@ export default function HomeTabs() {
         queryKey: ['destinations'],
         queryFn: fetchDestinations,
     });
+
+  
 
     const totalVisited = data?.filter(dest => dest.status === "visited").length || 0;
     const totalWishlist = data?.filter(dest => dest.status === "wishlist").length || 0;

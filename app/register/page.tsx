@@ -1,4 +1,4 @@
-import React from 'react'
+
 import RegisterForm from './components/RegisterForm'
 import { Card } from '@/components/ui/card'
 
