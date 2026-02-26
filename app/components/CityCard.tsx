@@ -24,6 +24,7 @@ export type DestinationType = {
     safety: number,
     culture: number,
     atmosphere: number,
+    images?: string[]
 }
 
 

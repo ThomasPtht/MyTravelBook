@@ -583,7 +583,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
                                     >
                                         <TagsInputList>
                                             {Array.isArray(field.value) && field.value.map((tag: string, idx: number) => (
-                                                <TagsInputItem key={tag + idx} index={idx} value={tag} />
+                                                <TagsInputItem key={tag + idx} value={tag} />
                                             ))}
                                             <TagsInputInput placeholder="Add neighborhood..." />
                                             <TagsInputClear />

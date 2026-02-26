@@ -17,7 +17,7 @@ const DestinationsList = ({
     status: "all" | "visited" | "wishlist";
     data: DestinationType[] | undefined;
     isLoading: boolean;
-    error: boolean
+    error: Error | null;
 }) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
 
