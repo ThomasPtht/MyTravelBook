@@ -1,11 +1,17 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import HomeTabs from "./components/HomeTabs";
-
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function HomeRootPage() {
-  const session = await getServerSession(authOptions);
+  let session;
+  try {
+    session = await getServerSession(authOptions);
+    console.error('Session:', session);
+  } catch (error) {
+    console.error('HomeRootPage error:', error);
+    throw error;
+  }
 
   if (!session) {
     redirect("/login");
