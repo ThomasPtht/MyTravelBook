@@ -2,6 +2,8 @@
 import WorldMap from './components/worldMap'
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic'; // force Next.js to render this page on the server for every request, error on build
+
 const MapPage = async () => {
     const destinations = await prisma.city.findMany();
 
