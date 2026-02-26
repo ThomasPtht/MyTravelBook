@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 import { formSchema } from "../schema/schemas"
 import { normalizeDestination } from "@/lib/normalizeDestination"
 import { getServerSession } from "next-auth"
-import { authOptions } from "../api/auth/[...nextauth]/route"
+import { authOptions } from "@/lib/auth";
 
 export async function createDestination(values: unknown) {
     const validated = formSchema.safeParse(values)
