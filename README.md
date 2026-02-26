@@ -21,6 +21,7 @@ Currently in development 🏗️
 - Tailwind CSS
 - Shadcn UI
 - Authentification with NextAuth.js
+- bcrypt for password hashing
 - Bucket S3 to store images of destinations : Cloudflare R2
 - Tests with Jest and React Testing Library
 - CI/CD with GitHub Actions

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import * as argon2 from "argon2";
+import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/app/schema/schemas";
 
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     // Hash le mot de passe
-    const hashedPassword = await argon2.hash(password);
+const hashedPassword = await bcrypt.hash(password, 10);
 
     // Crée l'utilisateur
     const user = await prisma.user.create({

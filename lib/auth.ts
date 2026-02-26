@@ -1,6 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
-import { verify } from "argon2";
+import bcrypt from "bcryptjs";
 import { JWT } from "next-auth/jwt";
 import { Session, User } from "next-auth";
 
@@ -18,7 +18,7 @@ export const authOptions = {
                     where: { email: credentials.email },
                 });
                 if (!user) return null;
-                const isValid = await verify(user.password, credentials.password);
+                const isValid = await bcrypt.compare(credentials.password, user.password);
                 if (!isValid) return null;
                 return {
                     id: user.id.toString(),
