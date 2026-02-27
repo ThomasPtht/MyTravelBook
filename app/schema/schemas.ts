@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { validatePassword } from "@/lib/passwordValidation";
 
 const wishlistSchema = z.object({
     cityName: z.string().min(2),
@@ -29,5 +30,13 @@ export const formSchema = z.discriminatedUnion("status", [
 export const registerSchema = z.object({
     username: z.string().min(2, { message: "Username must be at least 2 characters." }),
     email: z.string().email({ message: "Please enter a valid email address." }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+    password: z.string()
+        .min(6, { message: "Password must be at least 6 characters." })
+        .refine(
+            validatePassword,
+            {
+                message:
+                    "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+            }
+        ),
 });
