@@ -44,5 +44,5 @@ export const authOptions = {
             return token;
         },
     },
-secret: process.env.NEXTAUTH_SECRET ?? "5868c85002cbd86006d67f61ee4e0334c93cdf0b237747d54a265f39b0f245d4",
+    secret: process.env.NEXTAUTH_SECRET,
 };
