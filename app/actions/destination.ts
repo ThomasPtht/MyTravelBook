@@ -7,6 +7,7 @@ import { formSchema } from "../schema/schemas"
 import { normalizeDestination } from "@/lib/normalizeDestination"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth";
+import { ratelimit } from "@/lib/rateLimit"
 
 export async function createDestination(values: unknown) {
     const validated = formSchema.safeParse(values)
@@ -24,6 +25,11 @@ export async function createDestination(values: unknown) {
         const session = await getServerSession(authOptions);
         if (!session || !session.user?.id) {
             return { success: false, error: "Unauthorized" };
+        }
+
+          const { success } = await ratelimit.limit(`create_destination_${session.user.id}`);
+        if (!success) {
+            return { success: false, error: "Too many requests, slow down." };
         }
 
         const data = {
@@ -53,6 +59,11 @@ export async function deleteDestination(values: unknown) {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.id) {
         return { success: false, error: "Unauthorized" };
+    }
+
+    const { success } = await ratelimit.limit(`delete_destination_${session.user.id}`);
+    if (!success) {
+        return { success: false, error: "Too many requests, slow down." };
     }
 
     const userId = Number(session.user.id);

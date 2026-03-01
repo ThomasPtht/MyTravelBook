@@ -108,3 +108,12 @@ npx prisma migrate deploy
 npx prisma db seed
 # Then restore the local DATABASE_URL
 ```
+
+## Security measures
+
+- **Security headers**: Implemented via `next.config.js` to set headers like `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Referrer-Policy`, and `Permissions-Policy`.
+- **API route protection**: Middleware checks for authentication on POST/PUT/DELETE requests.
+- **Server-side input validation**: Zod is used to validate incoming data on the server.
+- **Password hashing**: Bcrypt is used to securely hash user passwords.
+- **Rate limiting**: Implemented with Upstash Ratelimit to prevent abuse of API endpoints.
+- **Ownership verification**: Ensures users can only delete their own destinations.
