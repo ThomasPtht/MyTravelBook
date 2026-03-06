@@ -36,7 +36,14 @@ export default function HomeTabs() {
 
     return (
         <div>
-               <Select value={sort} onValueChange={setSort}>
+            <Tabs className='mb-10' value={tab} onValueChange={setTab} defaultValue="all">
+                <div className="flex justify-between items-center">
+                    <TabsList variant="underline" className="border-b">
+                        <TabsTab value="all">All destinations ({totalAll})</TabsTab>
+                        <TabsTab value="visited">Visited ({totalVisited})</TabsTab>
+                        <TabsTab value="wishlist">Wishlist ({totalWishlist})</TabsTab>
+                    </TabsList>
+                    <Select value={sort} onValueChange={setSort}>
                         <SelectTrigger className="w-full max-w-40">
                             <ArrowDownWideNarrow />
                             <SelectValue placeholder="Select a filter" />
@@ -50,15 +57,6 @@ export default function HomeTabs() {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-            <Tabs className='mb-10' value={tab} onValueChange={setTab} defaultValue="all">
-                <div className="flex justify-between items-centers border-b mt-2">
-                    <TabsList variant="underline">
-                        <TabsTab value="all">All destinations ({totalAll})</TabsTab>
-                        <TabsTab value="visited">Visited ({totalVisited})</TabsTab>
-                        <TabsTab value="wishlist">Wishlist ({totalWishlist})</TabsTab>
-                    </TabsList>
-                 
-
                 </div>
             </Tabs>
             <DestinationsList data={data ? sortData(data, sort) : []} status={tab} isLoading={isLoading} error={error} />
