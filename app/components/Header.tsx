@@ -2,16 +2,16 @@
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import { BookOpen, Globe, Plus } from 'lucide-react'
+import { Globe, LayoutGrid, Plus } from 'lucide-react'
 import { FormAddDestination } from './FormAddDestination'
 import { useState } from 'react'
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup,
   DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { signOut, useSession } from "next-auth/react"
 import { usePathname, useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const Header = () => {
   const [open, setOpen] = useState(false)
@@ -22,146 +22,120 @@ const Header = () => {
   const username = (session?.user as { username?: string })?.username
 
   return (
-    <div className="w-full">
-
-      {/* ── DESKTOP (md+) : layout original en une ligne ── */}
-      <div className="hidden md:flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <h1
+    <header >
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 ">
+        {/* Left: Logo + Title + Tabs */}
+        <div className="flex items-center gap-3 sm:gap-5">
+          <div
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer"
             onClick={() => router.push("/")}
-            className="font-sans text-4xl font-light tracking-tight text-foreground cursor-pointer"
           >
-            My Travel Book
-          </h1>
-          <nav className="inline-flex items-center rounded-lg border bg-muted p-1 gap-0.5">
+            <Image
+              src="/travel-book-logo.png"
+              alt="My Travel Book"
+              width={120}
+              height={120}
+              className="h-10 w-10 sm:h-18 sm:w-18 object-contain"
+            />
+            <h1 className="text-lg sm:text-2xl font-serif text-foreground">
+              My Travel Book
+            </h1>
+          </div>
+
+          {/* Tab switcher — desktop */}
+          <div className="hidden sm:flex items-center gap-1 rounded-full border border-border bg-secondary p-1 ml-4">
             <button
               onClick={() => router.push("/")}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+              className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 activePage === "journal"
-                  ? "bg-background text-foreground shadow-sm border"
+                  ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <BookOpen className="h-4 w-4" />
+              <LayoutGrid size={15} />
               Journal
             </button>
             <button
               onClick={() => router.push("/map")}
-              className={`inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+              className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 activePage === "map"
-                  ? "bg-background text-foreground shadow-sm border"
+                  ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <Globe className="h-4 w-4" />
+              <Globe size={15} />
               Map
             </button>
-          </nav>
+          </div>
         </div>
-        <div className="flex items-center gap-4">
+
+        {/* Right: Add + Avatar */}
+        <div className="flex items-center gap-2 sm:gap-3">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button><Plus />Add destination</Button>
-            </DialogTrigger>
-            <DialogContent className="w-fit! max-w-[90vw]!">
-              <FormAddDestination onClose={() => setOpen(false)} />
-            </DialogContent>
-          </Dialog>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar data-testid="avatar-trigger" className="cursor-pointer" size="lg">
-                <AvatarImage src="/public/avatar.png" />
-                <AvatarFallback>{username?.[0]?.toUpperCase() ?? "U"}</AvatarFallback>
-                <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>{username ?? "U"}</DropdownMenuLabel>
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => signOut()}>Sign out</DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-
-      {/* Sous-titre desktop */}
-      <div className="hidden md:block mt-2">
-        <p className="text-xl text-muted-foreground">
-          Explore, rate and remember your favorite cities
-        </p>
-      </div>
-
-      {/* ── MOBILE (< md) : 2 lignes ── */}
-      <div className="flex md:hidden flex-col gap-3">
-
-        {/* Ligne 1 : Titre + Avatar */}
-        <div className="flex items-center justify-between">
-          <h1
-            onClick={() => router.push("/")}
-            className="font-sans text-2xl font-light tracking-tight text-foreground cursor-pointer"
-          >
-            My Travel Book
-          </h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar data-testid="avatar-trigger" className="cursor-pointer" size="lg">
-                <AvatarImage src="/public/avatar.png" />
-                <AvatarFallback>{username?.[0]?.toUpperCase() ?? "U"}</AvatarFallback>
-                <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>{username ?? "U"}</DropdownMenuLabel>
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => signOut()}>Sign out</DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        {/* Ligne 2 : Nav + Bouton + */}
-        <div className="flex items-center justify-between">
-          <nav className="inline-flex items-center rounded-lg border bg-muted p-1 gap-0.5">
-            <button
-              onClick={() => router.push("/")}
-              className={`inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
-                activePage === "journal"
-                  ? "bg-background text-foreground shadow-sm border"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <BookOpen className="h-4 w-4" />
-              Journal
-            </button>
-            <button
-              onClick={() => router.push("/map")}
-              className={`inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
-                activePage === "map"
-                  ? "bg-background text-foreground shadow-sm border"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Globe className="h-4 w-4" />
-              Map
-            </button>
-          </nav>
-
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button size="sm">
-                <Plus className="h-4 w-4 mr-1" />
-                Add
+              <Button
+                className="gap-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 px-3 sm:px-4"
+                size="sm"
+              >
+                <Plus size={16} />
+                <span className="hidden sm:inline">Add destination</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-fit! max-w-[90vw]!">
+            <DialogContent>
               <FormAddDestination onClose={() => setOpen(false)} />
             </DialogContent>
           </Dialog>
-        </div>
 
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-border bg-secondary text-sm font-semibold cursor-pointer">
+                {username?.[0]?.toUpperCase() ?? "U"}
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>{username ?? "User"}</DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={() => signOut()}>
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-    </div>
+
+      {/* Subtitle + mobile tabs */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-3 sm:pb-4">
+        <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-0">
+          Explore, rate and remember your favorite cities
+        </p>
+        {/* Mobile tab switcher */}
+        <div className="flex sm:hidden items-center gap-1 rounded-full border border-border bg-secondary p-1 mt-2 w-fit">
+          <button
+            onClick={() => router.push("/")}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+              activePage === "journal"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground"
+            }`}
+          >
+            <LayoutGrid size={13} />
+            Journal
+          </button>
+          <button
+            onClick={() => router.push("/map")}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+              activePage === "map"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground"
+            }`}
+          >
+            <Globe size={13} />
+            Map
+          </button>
+        </div>
+      </div>
+    </header>
   )
 }
 

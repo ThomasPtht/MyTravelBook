@@ -42,7 +42,7 @@ const WorldMap = ({ data }: { data: DestinationType[] }) => {
     };
 
     return (
-        <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto", position: "relative" }}>
+        <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto", position: "relative", marginTop: 0, paddingTop: 0 }}>
             {/* Tooltip en haut à gauche */}
             {hoveredCountry && (
                 <div className="flex items-center gap-2 absolute top-4 left-4 z-10 bg-background/90 backdrop-blur-sm border rounded-lg px-4 py-2 shadow-md">

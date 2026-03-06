@@ -30,7 +30,7 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
---color-primary: oklch(0.30 0.12 80);;
+  --color-primary: oklch(0.3 0.12 80);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -118,7 +118,11 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground ;
-    
+    @apply bg-background text-foreground;
+    font-family: var(--font-source-sans-3);
   }
+}
+
+h1 {
+  font-family: var(--font-playfair-display);
 }
