@@ -9,7 +9,7 @@ const RegisterPage = () => {
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
             <div className="w-full max-w-md space-y-8">
                 <div className="text-center space-y-3">
-                       <Image src="/logo-removebg.png" width={150} height={150} alt="logo My travel book" className="mx-auto" />
+                       <Image src="/travel-book-logo.png" width={150} height={150} alt="logo My travel book" className="mx-auto" />
                     <h1 className="text-4xl font-bold tracking-tight">
                         Join My Travel Book !
                     </h1>

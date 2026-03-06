@@ -23,7 +23,7 @@ const Header = () => {
 
   return (
     <header >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 ">
+      <div className="mx-auto flex m items-center justify-between px-4 ">
         {/* Left: Logo + Title + Tabs */}
         <div className="flex items-center gap-3 sm:gap-5">
           <div
@@ -105,7 +105,7 @@ const Header = () => {
       </div>
 
       {/* Subtitle + mobile tabs */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-3 sm:pb-4">
+      <div className="mx-auto  px-4 sm:px-6 pb-3 sm:pb-4">
         <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-0">
           Explore, rate and remember your favorite cities
         </p>
