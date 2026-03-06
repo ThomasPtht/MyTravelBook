@@ -318,7 +318,7 @@ export function FormAddDestination({ onClose }: { onClose: () => void }) {
 
                             <FormField
                                 control={form.control}
-                                name="personalNotes"
+                                name="description"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-xs sm:text-sm">Personal notes</FormLabel>
