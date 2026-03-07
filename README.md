@@ -45,6 +45,27 @@ Currently in development 🏗️
 - Ownership verification on delete operations
 - Password excluded from API responses
 
+## Cache management
+
+- React Query is used to manage server state and caching on the client side. After mutations (add, delete), the relevant queries are invalidated to ensure the UI reflects the latest data from the server.
+- example of refetching : after adding a destination, `queryClient.invalidateQueries('destinations')` is called to refetch the list of destinations.
+- I manage loading and error states using the status returned by React Query hooks (`isLoading`, `isError`, etc.) to provide feedback to the user during data fetching operations.
+- Defined cache for 5 minutes with staleTime to optimize performance while ensuring data is reasonably fresh. Enabled paramater stop queries if "id" is not defined to avoid unnecessary requests.
+
+## Uploading images
+Images are uploaded to Cloudflare R2, an S3-compatible object storage service. The server generates a pre-signed URL for the client to upload the image directly to R2, which improves performance and reduces server load.
+- Created r-2-upload.ts file in lib to handle image uploads to R2. Initialize an S3 client with Cloudflare R2 credentials and endpoint. The function validates file type and size, uploads the file to R2 with a unique name, and returns the public URL.
+    
+  Required environment variables:
+  - AWS_S3_API_URL
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_S3_BUCKET_NAME
+  - R2_URL (public base URL for files)
+  
+Then use it in server action **destination-image.ts** to handle image uploads from the client. The server action checks user authentication, calls the upload function, and returns the public URL of the uploaded image.
+
+
 ## Setup Jest (tests unitaires)
 
 To set up Jest for unit testing, the following dependencies were installed:
@@ -93,7 +114,7 @@ Sentry is used to monitor errors and performance in production. It captures cras
 
 ## Deployment
 
-The app is deployed on **Vercel** with a **Neon** PostgreSQL database.
+The app is deployed on **Vercel** with a **Neon** PostgreSQL database for production.
 
 ### Steps to deploy
 
@@ -108,6 +129,15 @@ npx prisma migrate deploy
 npx prisma db seed
 # Then restore the local DATABASE_URL
 ```
+
+## NextAuth setup
+
+- created a `next-auth.d.ts` file to extend the Session interface with a `user` object containing `id` and `username`.
+- In `authOptions`, the `session` callback is configured to include `user.id` and `user.username` in the session object returned to the client.
+- authOptions allows to set up the authentication providers (CredentialsProvider for email/password login) then use it in the `NextAuth` handler in `app/api/auth/[...nextauth]/route.ts`.
+- Define SessionProvider in `app/layout.tsx` to wrap the app and provide session context to all components.
+- In the `Header` component, the session is accessed using `useSession()`, and the username is extracted from `session.user.username` for display.
+- This setup allows the app to access the authenticated user's information (like username) across components via the session.
 
 ## Security measures
 
